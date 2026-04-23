@@ -1,0 +1,33 @@
+import { isDemoMode } from '@/lib/config';
+
+export const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+
+export class ApiError extends Error {
+    constructor(public status: number, message: string) {
+        super(message);
+        this.name = 'ApiError';
+    }
+}
+
+export async function apiClient<T>(
+    endpoint: string,
+    options?: RequestInit
+): Promise<T> {
+    if (isDemoMode) {
+        throw new ApiError(0, 'Demo mode: use demo data hooks instead of apiClient');
+    }
+    
+    const response = await fetch(`${API_BASE_URL}${endpoint}`, {
+        ...options,
+        headers: {
+            'Content-Type': 'application/json',
+            ...options?.headers,
+        },
+    });
+
+    if (!response.ok) {
+        throw new ApiError(response.status, `API Error: ${response.statusText}`);
+    }
+
+    return response.json();
+}

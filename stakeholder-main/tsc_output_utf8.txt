@@ -1,0 +1,61 @@
+﻿.next/dev/types/validator.ts(693,31): error TS2344: Type 'typeof import("D:/stakeholder directory/app/api/student/crl/[id]/assess/route")' does not satisfy the constraint 'RouteHandlerConfig<"/api/student/crl/[id]/assess">'.
+  Types of property 'POST' are incompatible.
+    Type '(req: NextRequest, { params }: { params: { id: string; }; }) => Promise<NextResponse<{ error: string; }> | NextResponse<{ success: boolean; evidence: { id: string; createdAt: Date; ... 18 more ...; mentorNotified: boolean; }; }>>' is not assignable to type '(request: NextRequest, context: { params: Promise<{ id: string; }>; }) => void | Response | Promise<void | Response>'.
+      Types of parameters '__1' and 'context' are incompatible.
+        Type '{ params: Promise<{ id: string; }>; }' is not assignable to type '{ params: { id: string; }; }'.
+          Types of property 'params' are incompatible.
+            Property 'id' is missing in type 'Promise<{ id: string; }>' but required in type '{ id: string; }'.
+.next/dev/types/validator.ts(720,31): error TS2344: Type 'typeof import("D:/stakeholder directory/app/api/student/irl/[id]/assess/route")' does not satisfy the constraint 'RouteHandlerConfig<"/api/student/irl/[id]/assess">'.
+  Types of property 'POST' are incompatible.
+    Type '(req: NextRequest, { params }: { params: { id: string; }; }) => Promise<NextResponse<{ error: string; }> | NextResponse<{ success: boolean; evidence: { id: string; createdAt: Date; ... 18 more ...; mentorNotified: boolean; }; }>>' is not assignable to type '(request: NextRequest, context: { params: Promise<{ id: string; }>; }) => void | Response | Promise<void | Response>'.
+      Types of parameters '__1' and 'context' are incompatible.
+        Type '{ params: Promise<{ id: string; }>; }' is not assignable to type '{ params: { id: string; }; }'.
+          Types of property 'params' are incompatible.
+            Property 'id' is missing in type 'Promise<{ id: string; }>' but required in type '{ id: string; }'.
+.next/dev/types/validator.ts(801,31): error TS2344: Type 'typeof import("D:/stakeholder directory/app/api/student/sprint/[sprintNumber]/submit/route")' does not satisfy the constraint 'RouteHandlerConfig<"/api/student/sprint/[sprintNumber]/submit">'.
+  Types of property 'POST' are incompatible.
+    Type '(req: NextRequest, { params }: { params: { sprintNumber: string; }; }) => Promise<NextResponse<{ error: string; }> | NextResponse<{ success: boolean; sprintCompleted: boolean; }>>' is not assignable to type '(request: NextRequest, context: { params: Promise<{ sprintNumber: string; }>; }) => void | Response | Promise<void | Response>'.
+      Types of parameters '__1' and 'context' are incompatible.
+        Type '{ params: Promise<{ sprintNumber: string; }>; }' is not assignable to type '{ params: { sprintNumber: string; }; }'.
+          Types of property 'params' are incompatible.
+            Property 'sprintNumber' is missing in type 'Promise<{ sprintNumber: string; }>' but required in type '{ sprintNumber: string; }'.
+.next/types/validator.ts(693,31): error TS2344: Type 'typeof import("D:/stakeholder directory/app/api/student/crl/[id]/assess/route")' does not satisfy the constraint 'RouteHandlerConfig<"/api/student/crl/[id]/assess">'.
+  Types of property 'POST' are incompatible.
+    Type '(req: NextRequest, { params }: { params: { id: string; }; }) => Promise<NextResponse<{ error: string; }> | NextResponse<{ success: boolean; evidence: { id: string; createdAt: Date; ... 18 more ...; mentorNotified: boolean; }; }>>' is not assignable to type '(request: NextRequest, context: { params: Promise<{ id: string; }>; }) => void | Response | Promise<void | Response>'.
+      Types of parameters '__1' and 'context' are incompatible.
+        Type '{ params: Promise<{ id: string; }>; }' is not assignable to type '{ params: { id: string; }; }'.
+          Types of property 'params' are incompatible.
+            Property 'id' is missing in type 'Promise<{ id: string; }>' but required in type '{ id: string; }'.
+.next/types/validator.ts(720,31): error TS2344: Type 'typeof import("D:/stakeholder directory/app/api/student/irl/[id]/assess/route")' does not satisfy the constraint 'RouteHandlerConfig<"/api/student/irl/[id]/assess">'.
+  Types of property 'POST' are incompatible.
+    Type '(req: NextRequest, { params }: { params: { id: string; }; }) => Promise<NextResponse<{ error: string; }> | NextResponse<{ success: boolean; evidence: { id: string; createdAt: Date; ... 18 more ...; mentorNotified: boolean; }; }>>' is not assignable to type '(request: NextRequest, context: { params: Promise<{ id: string; }>; }) => void | Response | Promise<void | Response>'.
+      Types of parameters '__1' and 'context' are incompatible.
+        Type '{ params: Promise<{ id: string; }>; }' is not assignable to type '{ params: { id: string; }; }'.
+          Types of property 'params' are incompatible.
+            Property 'id' is missing in type 'Promise<{ id: string; }>' but required in type '{ id: string; }'.
+.next/types/validator.ts(801,31): error TS2344: Type 'typeof import("D:/stakeholder directory/app/api/student/sprint/[sprintNumber]/submit/route")' does not satisfy the constraint 'RouteHandlerConfig<"/api/student/sprint/[sprintNumber]/submit">'.
+  Types of property 'POST' are incompatible.
+    Type '(req: NextRequest, { params }: { params: { sprintNumber: string; }; }) => Promise<NextResponse<{ error: string; }> | NextResponse<{ success: boolean; sprintCompleted: boolean; }>>' is not assignable to type '(request: NextRequest, context: { params: Promise<{ sprintNumber: string; }>; }) => void | Response | Promise<void | Response>'.
+      Types of parameters '__1' and 'context' are incompatible.
+        Type '{ params: Promise<{ sprintNumber: string; }>; }' is not assignable to type '{ params: { sprintNumber: string; }; }'.
+          Types of property 'params' are incompatible.
+            Property 'sprintNumber' is missing in type 'Promise<{ sprintNumber: string; }>' but required in type '{ sprintNumber: string; }'.
+app/api/manager/review/route.ts(21,63): error TS2353: Object literal may only specify known properties, and 'image' does not exist in type 'UserSelect<DefaultArgs>'.
+app/api/manager/review/route.ts(36,55): error TS2353: Object literal may only specify known properties, and 'image' does not exist in type 'UserSelect<DefaultArgs>'.
+app/api/manager/review/route.ts(49,55): error TS2353: Object literal may only specify known properties, and 'image' does not exist in type 'UserSelect<DefaultArgs>'.
+app/api/manager/review/route.ts(62,25): error TS2551: Property 'sprint' does not exist on type '{ id: string; createdAt: Date; updatedAt: Date; status: string; submittedAt: Date | null; blockedByToolId: string | null; blockedByToolName: string | null; toolId: string; ... 11 more ...; resources: JsonValue; }'. Did you mean 'sprintId'?
+app/api/manager/review/route.ts(63,28): error TS2551: Property 'sprint' does not exist on type '{ id: string; createdAt: Date; updatedAt: Date; status: string; submittedAt: Date | null; blockedByToolId: string | null; blockedByToolName: string | null; toolId: string; ... 11 more ...; resources: JsonValue; }'. Did you mean 'sprintId'?
+app/api/manager/review/route.ts(64,36): error TS2551: Property 'sprint' does not exist on type '{ id: string; createdAt: Date; updatedAt: Date; status: string; submittedAt: Date | null; blockedByToolId: string | null; blockedByToolName: string | null; toolId: string; ... 11 more ...; resources: JsonValue; }'. Did you mean 'sprintId'?
+app/api/manager/review/route.ts(69,30): error TS2551: Property 'sprint' does not exist on type '{ id: string; createdAt: Date; updatedAt: Date; status: string; submittedAt: Date | null; blockedByToolId: string | null; blockedByToolName: string | null; toolId: string; ... 11 more ...; resources: JsonValue; }'. Did you mean 'sprintId'?
+app/api/manager/review/route.ts(74,25): error TS2551: Property 'journey' does not exist on type '{ id: string; createdAt: Date; updatedAt: Date; status: string; journeyId: string; evidenceText: string; aiScore: number | null; submittedAt: Date | null; reviewedAt: Date | null; ... 11 more ...; mentorNotified: boolean; }'. Did you mean 'journeyId'?
+app/api/manager/review/route.ts(75,28): error TS2551: Property 'journey' does not exist on type '{ id: string; createdAt: Date; updatedAt: Date; status: string; journeyId: string; evidenceText: string; aiScore: number | null; submittedAt: Date | null; reviewedAt: Date | null; ... 11 more ...; mentorNotified: boolean; }'. Did you mean 'journeyId'?
+app/api/manager/review/route.ts(81,30): error TS2551: Property 'journey' does not exist on type '{ id: string; createdAt: Date; updatedAt: Date; status: string; journeyId: string; evidenceText: string; aiScore: number | null; submittedAt: Date | null; reviewedAt: Date | null; ... 11 more ...; mentorNotified: boolean; }'. Did you mean 'journeyId'?
+app/api/manager/review/route.ts(86,25): error TS2551: Property 'journey' does not exist on type '{ id: string; createdAt: Date; updatedAt: Date; status: string; journeyId: string; evidenceText: string; aiScore: number | null; submittedAt: Date | null; reviewedAt: Date | null; ... 11 more ...; mentorNotified: boolean; }'. Did you mean 'journeyId'?
+app/api/manager/review/route.ts(87,28): error TS2551: Property 'journey' does not exist on type '{ id: string; createdAt: Date; updatedAt: Date; status: string; journeyId: string; evidenceText: string; aiScore: number | null; submittedAt: Date | null; reviewedAt: Date | null; ... 11 more ...; mentorNotified: boolean; }'. Did you mean 'journeyId'?
+app/api/manager/review/route.ts(93,30): error TS2551: Property 'journey' does not exist on type '{ id: string; createdAt: Date; updatedAt: Date; status: string; journeyId: string; evidenceText: string; aiScore: number | null; submittedAt: Date | null; reviewedAt: Date | null; ... 11 more ...; mentorNotified: boolean; }'. Did you mean 'journeyId'?
+app/api/student/sprint/[sprintNumber]/submit/route.ts(40,15): error TS2339: Property 'type' does not exist on type 'NudgeResult'.
+  Property 'type' does not exist on type '{ nudgeType: "CLEAR"; hints?: any[] | undefined; }'.
+app/api/student/stakeholder-match/route.ts(24,9): error TS2353: Object literal may only specify known properties, and 'focusSectors' does not exist in type 'StakeholderProfileWhereInput'.
+app/api/student/stakeholder-match/route.ts(47,33): error TS2339: Property 'name' does not exist on type '{ id: string; createdAt: Date; updatedAt: Date; tags: string[]; userId: string; designation: string; alternateDesignations: string[]; organization: string | null; organizationType: string | null; ... 108 more ...; responseRate: number | null; }'.
+app/api/student/stakeholder-match/route.ts(47,50): error TS2339: Property 'type' does not exist on type '{ id: string; createdAt: Date; updatedAt: Date; tags: string[]; userId: string; designation: string; alternateDesignations: string[]; organization: string | null; organizationType: string | null; ... 108 more ...; responseRate: number | null; }'.
+app/api/student/stakeholder-match/route.ts(47,77): error TS2339: Property 'focusProblems' does not exist on type '{ id: string; createdAt: Date; updatedAt: Date; tags: string[]; userId: string; designation: string; alternateDesignations: string[]; organization: string | null; organizationType: string | null; ... 108 more ...; responseRate: number | null; }'.

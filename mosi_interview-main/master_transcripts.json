@@ -1,0 +1,85 @@
+{
+  "Aequs_Operations_Vikram": [
+    {
+      "id": "v-001",
+      "speaker": "Interviewer",
+      "text": "Vikram, thank you for showing us the shop floor. Aequs' scale in this single SEZ is impressive, but you mentioned earlier that the 'vertical integration' isn't as smooth as it looks on paper. Where are the actual friction points?",
+      "timestamp": 0,
+      "confidence": 0.98
+    },
+    {
+      "id": "v-002",
+      "speaker": "Vikram Singh",
+      "text": "It's the raw material flow. Even though everything is in one zone, we're seeing major delays in the handoff between forging and precision machining. The 10,000-ton press is a beast, but if the downstream machining units aren't perfectly synced, the material just sits there. It's a massive vertical integration bottleneck.",
+      "timestamp": 45,
+      "confidence": 0.95
+    },
+    {
+      "id": "v-003",
+      "speaker": "Interviewer",
+      "text": "Is that a scheduling problem, or a lack of visibility into the machining status?",
+      "timestamp": 120,
+      "confidence": 0.97
+    },
+    {
+      "id": "v-004",
+      "speaker": "Vikram Singh",
+      "text": "It's both. We don't have a real-time 'digital twin' of the floor. Right now, I can't look at a screen and see exactly which machining centers are free and which are overloaded. We're relying on manual walk-throughs to manage the backlog. If we had a digital twin for machining, I could optimize the throughput in real-time.",
+      "timestamp": 185,
+      "confidence": 0.94
+    }
+  ],
+  "TechForge_Quality_Karthik": [
+    {
+      "id": "k-001",
+      "speaker": "Interviewer",
+      "text": "Karthik, we've been looking at the assembly line data. The speed is high, but the yield is fluctuating quite a bit. What's the primary cause of the rework you're seeing?",
+      "timestamp": 0,
+      "confidence": 0.98
+    },
+    {
+      "id": "k-002",
+      "speaker": "Karthik N.",
+      "text": "It's almost exclusively the soldering stage. We're hitting a high defect rate in the through-hole soldering, and it’s forcing us into a lot of manual rework. It's killing our margin and slowing down the whole line speed.",
+      "timestamp": 35,
+      "confidence": 0.95
+    },
+    {
+      "id": "k-003",
+      "speaker": "Interviewer",
+      "text": "How are you currently detecting these soldering defects?",
+      "timestamp": 90,
+      "confidence": 0.97
+    },
+    {
+      "id": "k-004",
+      "speaker": "Karthik N.",
+      "text": "We have two quality inspectors with magnifying glasses at the end of the line. It's slow and prone to human error. I've been pushing for an AI vision-based inspection system that can catch these defects at high speed.",
+      "timestamp": 145,
+      "confidence": 0.94
+    }
+  ],
+  "FarmTech_RD_Aruna": [
+    {
+      "id": "a-001",
+      "speaker": "Interviewer",
+      "text": "Dr. Aruna, you're trying to scale this IoT sensor network to 1,000+ farm clusters. That’s a massive deployment. What's currently keeping you up at night regarding the rural infrastructure?",
+      "timestamp": 0,
+      "confidence": 0.98
+    },
+    {
+      "id": "a-002",
+      "speaker": "Dr. Aruna P.",
+      "text": "Connectivity is the brick wall. In most of these regions, 4G or 5G coverage is spotty at best. We have these high-quality soil sensors gathering data, but syncing that data to our central servers is a nightmare when the bandwidth is so low.",
+      "timestamp": 50,
+      "confidence": 0.96
+    },
+    {
+      "id": "a-003",
+      "speaker": "Interviewer",
+      "text": "Are you processing data on the edge to reduce the payload?",
+      "timestamp": 115,
+      "confidence": 0.97
+    }
+  ]
+}

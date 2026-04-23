@@ -1,0 +1,416 @@
+
+    // NAGPUR NEXT: Ashta Tech Automation Pvt. Ltd.
+    {
+        id: 'company-ashta-001',
+        name: 'Ashta Tech Automation Pvt. Ltd.',
+        legal_name: 'Ashta Tech Automation Pvt. Ltd.',
+        sector: 'automation',
+        sub_sector: 'Industrial Robotics',
+        headquarters_city: 'Nagpur',
+        headquarters_state: 'Maharashtra',
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+        stage: 'growth',
+        current_stage: 4,
+        rag_status: 'amber',
+        overall_score: 65,
+        regional_context: {
+            region_name: 'Nagpur & Vidarbha',
+            hub_type: 'Manufacturing & Engineering',
+            correlation_score: 0.85
+        },
+        challenges: [
+            {
+                id: 'challenge-nag-001',
+                title: 'Nagpur NEXT Innovation Challenge',
+                description: 'Participating in the regional MSME innovation challenge for Industrial Robotics optimization.',
+                status: 'published',
+                category: 'Digital Transformation',
+                associated_program_id: 'nagpur-next-2026'
+            }
+        ]
+    },
+
+    // NAGPUR NEXT: Open Category
+    {
+        id: 'company-open-002',
+        name: 'Open Category',
+        legal_name: 'Open Category',
+        sector: 'general_engineering',
+        sub_sector: 'Multi-sector MSME',
+        headquarters_city: 'Nagpur',
+        headquarters_state: 'Maharashtra',
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+        stage: 'growth',
+        current_stage: 4,
+        rag_status: 'amber',
+        overall_score: 65,
+        regional_context: {
+            region_name: 'Nagpur & Vidarbha',
+            hub_type: 'Manufacturing & Engineering',
+            correlation_score: 0.85
+        },
+        challenges: [
+            {
+                id: 'challenge-nag-002',
+                title: 'Nagpur NEXT Innovation Challenge',
+                description: 'Participating in the regional MSME innovation challenge for Multi-sector MSME optimization.',
+                status: 'published',
+                category: 'Digital Transformation',
+                associated_program_id: 'nagpur-next-2026'
+            }
+        ]
+    },
+
+    // NAGPUR NEXT: Beta Computronics Pvt. Ltd.
+    {
+        id: 'company-beta-003',
+        name: 'Beta Computronics Pvt. Ltd.',
+        legal_name: 'Beta Computronics Pvt. Ltd.',
+        sector: 'automation',
+        sub_sector: 'Industrial Electronics',
+        headquarters_city: 'Nagpur',
+        headquarters_state: 'Maharashtra',
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+        stage: 'growth',
+        current_stage: 4,
+        rag_status: 'amber',
+        overall_score: 65,
+        regional_context: {
+            region_name: 'Nagpur & Vidarbha',
+            hub_type: 'Manufacturing & Engineering',
+            correlation_score: 0.85
+        },
+        challenges: [
+            {
+                id: 'challenge-nag-003',
+                title: 'Nagpur NEXT Innovation Challenge',
+                description: 'Participating in the regional MSME innovation challenge for Industrial Electronics optimization.',
+                status: 'published',
+                category: 'Digital Transformation',
+                associated_program_id: 'nagpur-next-2026'
+            }
+        ]
+    },
+
+    // NAGPUR NEXT: Jaiswal Steel Processing
+    {
+        id: 'company-jaiswal-004',
+        name: 'Jaiswal Steel Processing',
+        legal_name: 'Jaiswal Steel Processing',
+        sector: 'steel_processing',
+        sub_sector: 'Hot & Cold Rolling',
+        headquarters_city: 'Nagpur',
+        headquarters_state: 'Maharashtra',
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+        stage: 'growth',
+        current_stage: 4,
+        rag_status: 'amber',
+        overall_score: 65,
+        regional_context: {
+            region_name: 'Nagpur & Vidarbha',
+            hub_type: 'Manufacturing & Engineering',
+            correlation_score: 0.85
+        },
+        challenges: [
+            {
+                id: 'challenge-nag-004',
+                title: 'Nagpur NEXT Innovation Challenge',
+                description: 'Participating in the regional MSME innovation challenge for Hot & Cold Rolling optimization.',
+                status: 'published',
+                category: 'Digital Transformation',
+                associated_program_id: 'nagpur-next-2026'
+            }
+        ]
+    },
+
+    // NAGPUR NEXT: Suraj Informatics
+    {
+        id: 'company-suraj-005',
+        name: 'Suraj Informatics',
+        legal_name: 'Suraj Informatics',
+        sector: 'it_logistics',
+        sub_sector: 'Industrial IoT',
+        headquarters_city: 'Nagpur',
+        headquarters_state: 'Maharashtra',
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+        stage: 'growth',
+        current_stage: 4,
+        rag_status: 'amber',
+        overall_score: 65,
+        regional_context: {
+            region_name: 'Nagpur & Vidarbha',
+            hub_type: 'Manufacturing & Engineering',
+            correlation_score: 0.85
+        },
+        challenges: [
+            {
+                id: 'challenge-nag-005',
+                title: 'Nagpur NEXT Innovation Challenge',
+                description: 'Participating in the regional MSME innovation challenge for Industrial IoT optimization.',
+                status: 'published',
+                category: 'Digital Transformation',
+                associated_program_id: 'nagpur-next-2026'
+            }
+        ]
+    },
+
+    // NAGPUR NEXT: Unnat Agro Innovation
+    {
+        id: 'company-unnat-006',
+        name: 'Unnat Agro Innovation',
+        legal_name: 'Unnat Agro Innovation',
+        sector: 'agri_processing',
+        sub_sector: 'Post-harvest tech',
+        headquarters_city: 'Nagpur',
+        headquarters_state: 'Maharashtra',
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+        stage: 'growth',
+        current_stage: 4,
+        rag_status: 'amber',
+        overall_score: 65,
+        regional_context: {
+            region_name: 'Nagpur & Vidarbha',
+            hub_type: 'Manufacturing & Engineering',
+            correlation_score: 0.85
+        },
+        challenges: [
+            {
+                id: 'challenge-nag-006',
+                title: 'Nagpur NEXT Innovation Challenge',
+                description: 'Participating in the regional MSME innovation challenge for Post-harvest tech optimization.',
+                status: 'published',
+                category: 'Digital Transformation',
+                associated_program_id: 'nagpur-next-2026'
+            }
+        ]
+    },
+
+    // NAGPUR NEXT: Precision Machining Systems
+    {
+        id: 'company-precision-007',
+        name: 'Precision Machining Systems',
+        legal_name: 'Precision Machining Systems',
+        sector: 'manufacturing',
+        sub_sector: 'CNC Machining',
+        headquarters_city: 'Nagpur',
+        headquarters_state: 'Maharashtra',
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+        stage: 'growth',
+        current_stage: 4,
+        rag_status: 'amber',
+        overall_score: 65,
+        regional_context: {
+            region_name: 'Nagpur & Vidarbha',
+            hub_type: 'Manufacturing & Engineering',
+            correlation_score: 0.85
+        },
+        challenges: [
+            {
+                id: 'challenge-nag-007',
+                title: 'Nagpur NEXT Innovation Challenge',
+                description: 'Participating in the regional MSME innovation challenge for CNC Machining optimization.',
+                status: 'published',
+                category: 'Digital Transformation',
+                associated_program_id: 'nagpur-next-2026'
+            }
+        ]
+    },
+
+    // NAGPUR NEXT: Vidarbha Solar Solutions
+    {
+        id: 'company-vidarbha-008',
+        name: 'Vidarbha Solar Solutions',
+        legal_name: 'Vidarbha Solar Solutions',
+        sector: 'energy',
+        sub_sector: 'Solar PV Assemblies',
+        headquarters_city: 'Nagpur',
+        headquarters_state: 'Maharashtra',
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+        stage: 'growth',
+        current_stage: 4,
+        rag_status: 'amber',
+        overall_score: 65,
+        regional_context: {
+            region_name: 'Nagpur & Vidarbha',
+            hub_type: 'Manufacturing & Engineering',
+            correlation_score: 0.85
+        },
+        challenges: [
+            {
+                id: 'challenge-nag-008',
+                title: 'Nagpur NEXT Innovation Challenge',
+                description: 'Participating in the regional MSME innovation challenge for Solar PV Assemblies optimization.',
+                status: 'published',
+                category: 'Digital Transformation',
+                associated_program_id: 'nagpur-next-2026'
+            }
+        ]
+    },
+
+    // NAGPUR NEXT: Composite Engineering Works
+    {
+        id: 'company-composite-009',
+        name: 'Composite Engineering Works',
+        legal_name: 'Composite Engineering Works',
+        sector: 'aerospace',
+        sub_sector: 'FRP & Carbon Fiber',
+        headquarters_city: 'Nagpur',
+        headquarters_state: 'Maharashtra',
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+        stage: 'growth',
+        current_stage: 4,
+        rag_status: 'amber',
+        overall_score: 65,
+        regional_context: {
+            region_name: 'Nagpur & Vidarbha',
+            hub_type: 'Manufacturing & Engineering',
+            correlation_score: 0.85
+        },
+        challenges: [
+            {
+                id: 'challenge-nag-009',
+                title: 'Nagpur NEXT Innovation Challenge',
+                description: 'Participating in the regional MSME innovation challenge for FRP & Carbon Fiber optimization.',
+                status: 'published',
+                category: 'Digital Transformation',
+                associated_program_id: 'nagpur-next-2026'
+            }
+        ]
+    },
+
+    // NAGPUR NEXT: DigitAll Solutions
+    {
+        id: 'company-digit-010',
+        name: 'DigitAll Solutions',
+        legal_name: 'DigitAll Solutions',
+        sector: 'it_logistics',
+        sub_sector: 'ERP Implementation',
+        headquarters_city: 'Nagpur',
+        headquarters_state: 'Maharashtra',
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+        stage: 'growth',
+        current_stage: 4,
+        rag_status: 'amber',
+        overall_score: 65,
+        regional_context: {
+            region_name: 'Nagpur & Vidarbha',
+            hub_type: 'Manufacturing & Engineering',
+            correlation_score: 0.85
+        },
+        challenges: [
+            {
+                id: 'challenge-nag-010',
+                title: 'Nagpur NEXT Innovation Challenge',
+                description: 'Participating in the regional MSME innovation challenge for ERP Implementation optimization.',
+                status: 'published',
+                category: 'Digital Transformation',
+                associated_program_id: 'nagpur-next-2026'
+            }
+        ]
+    },
+
+    // NAGPUR NEXT: EcoBriquette Systems
+    {
+        id: 'company-eco-011',
+        name: 'EcoBriquette Systems',
+        legal_name: 'EcoBriquette Systems',
+        sector: 'energy',
+        sub_sector: 'Waste-to-Energy',
+        headquarters_city: 'Nagpur',
+        headquarters_state: 'Maharashtra',
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+        stage: 'growth',
+        current_stage: 4,
+        rag_status: 'amber',
+        overall_score: 65,
+        regional_context: {
+            region_name: 'Nagpur & Vidarbha',
+            hub_type: 'Manufacturing & Engineering',
+            correlation_score: 0.85
+        },
+        challenges: [
+            {
+                id: 'challenge-nag-011',
+                title: 'Nagpur NEXT Innovation Challenge',
+                description: 'Participating in the regional MSME innovation challenge for Waste-to-Energy optimization.',
+                status: 'published',
+                category: 'Digital Transformation',
+                associated_program_id: 'nagpur-next-2026'
+            }
+        ]
+    },
+
+    // NAGPUR NEXT: Flow Control Systems
+    {
+        id: 'company-flow-012',
+        name: 'Flow Control Systems',
+        legal_name: 'Flow Control Systems',
+        sector: 'heavy_engineering',
+        sub_sector: 'Valve & Pump Mfg',
+        headquarters_city: 'Nagpur',
+        headquarters_state: 'Maharashtra',
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+        stage: 'growth',
+        current_stage: 4,
+        rag_status: 'amber',
+        overall_score: 65,
+        regional_context: {
+            region_name: 'Nagpur & Vidarbha',
+            hub_type: 'Manufacturing & Engineering',
+            correlation_score: 0.85
+        },
+        challenges: [
+            {
+                id: 'challenge-nag-012',
+                title: 'Nagpur NEXT Innovation Challenge',
+                description: 'Participating in the regional MSME innovation challenge for Valve & Pump Mfg optimization.',
+                status: 'published',
+                category: 'Digital Transformation',
+                associated_program_id: 'nagpur-next-2026'
+            }
+        ]
+    },
+
+    // NAGPUR NEXT: Heavy Fabrication Unit
+    {
+        id: 'company-heavy-013',
+        name: 'Heavy Fabrication Unit',
+        legal_name: 'Heavy Fabrication Unit',
+        sector: 'heavy_engineering',
+        sub_sector: 'Structural Steel',
+        headquarters_city: 'Nagpur',
+        headquarters_state: 'Maharashtra',
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+        stage: 'growth',
+        current_stage: 4,
+        rag_status: 'amber',
+        overall_score: 65,
+        regional_context: {
+            region_name: 'Nagpur & Vidarbha',
+            hub_type: 'Manufacturing & Engineering',
+            correlation_score: 0.85
+        },
+        challenges: [
+            {
+                id: 'challenge-nag-013',
+                title: 'Nagpur NEXT Innovation Challenge',
+                description: 'Participating in the regional MSME innovation challenge for Structural Steel optimization.',
+                status: 'published',
+                category: 'Digital Transformation',
+                associated_program_id: 'nagpur-next-2026'
+            }
+        ]
+    }

@@ -1,0 +1,25 @@
+export const SECTORS = [
+    { value: 'aerospace', label: 'Aerospace & Defense', color: '#06B6D4' },
+    { value: 'oil_gas_petro', label: 'Oil, Gas & Petrochemicals', color: '#EF4444' },
+    { value: 'port-logistics', label: 'Port & Logistics', color: '#3B82F6' },
+    { value: 'bfsi', label: 'Banking & Finance', color: '#8B5CF6' },
+    { value: 'it-ites', label: 'IT & Software', color: '#EC4899' },
+    { value: 'healthcare', label: 'Healthcare & Medical', color: '#10B981' },
+    { value: 'food-processing', label: 'Food & Fisheries', color: '#F59E0B' },
+    { value: 'cashew', label: 'Cashew Processing', color: '#D97706' },
+    { value: 'engineering', label: 'General Engineering', color: '#6366F1' },
+    { value: 'construction', label: 'Construction & Real Estate', color: '#F43F5E' },
+    { value: 'marine-eng', label: 'Marine Engineering', color: '#0EA5E9' },
+    { value: 'edtech', label: 'EdTech & Education', color: '#F97316' },
+    { value: 'hospitality', label: 'Hospitality & Tourism', color: '#A855F7' },
+    { value: 'tile-refractories', label: 'Tile & Refractories', color: '#78350F' },
+    { value: 'auto-components', label: 'Auto Components', color: '#475569' },
+    { value: 'printing-packaging', label: 'Printing & Packaging', color: '#BE185D' },
+    { value: 'rubber-plastic', label: 'Rubber & Plastics', color: '#15803D' },
+    { value: 'jewelry', label: 'Jewelry & Handicrafts', color: '#C2410C' },
+    { value: 'retail', label: 'Retail & Distribution', color: '#2563EB' },
+    { value: 'automation', label: 'Industrial Automation & Robotics', color: '#10B981' },
+    { value: 'logistics', label: 'Logistics & Supply Chain', color: '#3B82F6' },
+] as const;
+
+export type Sector = (typeof SECTORS)[number];

@@ -1,0 +1,44 @@
+[
+  {
+    "id": "a-001",
+    "speaker": "Interviewer",
+    "text": "Dr. Aruna, you're trying to scale this IoT sensor network to 1,000+ farm clusters. That’s a massive deployment. What's currently keeping you up at night regarding the rural infrastructure?",
+    "timestamp": 0,
+    "confidence": 0.98
+  },
+  {
+    "id": "a-002",
+    "speaker": "Dr. Aruna P.",
+    "text": "Connectivity is the brick wall. In most of these regions, 4G or 5G coverage is spotty at best. We have these high-quality soil sensors gathering data, but syncing that data to our central servers is a nightmare when the bandwidth is so low. We need a way to manage rural low-bandwidth sync reliably.",
+    "timestamp": 50,
+    "confidence": 0.96
+  },
+  {
+    "id": "a-003",
+    "speaker": "Interviewer",
+    "text": "Are you processing data on the edge to reduce the payload?",
+    "timestamp": 115,
+    "confidence": 0.97
+  },
+  {
+    "id": "a-004",
+    "speaker": "Dr. Aruna P.",
+    "text": "We're trying, but our current edge processing is quite basic. The real value is in our predictive yield modeling. If we can combine the local soil data with high-res satellite imagery, we can reach 95% yield accuracy. But that requires a lot of data merging that currently has to happen in the cloud.",
+    "timestamp": 170,
+    "confidence": 0.95
+  },
+  {
+    "id": "a-005",
+    "speaker": "Interviewer",
+    "text": "How are the farmers reacting to these insights? Are they actually changing their irrigation or fertilizing habits based on your models?",
+    "timestamp": 240,
+    "confidence": 0.99
+  },
+  {
+    "id": "a-006",
+    "speaker": "Dr. Aruna P.",
+    "text": "The trust is growing. When we can show them a 15% increase in crop yield because they followed our water management advice, they become our biggest advocates. The potential for these 'smart clusters' is enormous; we just need to solve the digital plumbing first.",
+    "timestamp": 310,
+    "confidence": 0.98
+  }
+]

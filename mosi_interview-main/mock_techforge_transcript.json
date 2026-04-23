@@ -1,0 +1,44 @@
+[
+  {
+    "id": "k-001",
+    "speaker": "Interviewer",
+    "text": "Karthik, we've been looking at the assembly line data. The speed is high, but the yield is fluctuating quite a bit. What's the primary cause of the rework you're seeing?",
+    "timestamp": 0,
+    "confidence": 0.98
+  },
+  {
+    "id": "k-002",
+    "speaker": "Karthik N.",
+    "text": "It's almost exclusively the soldering stage. We're hitting a high defect rate in the through-hole soldering, and it’s forcing us into a lot of manual rework. It's killing our margin and slowing down the whole line speed.",
+    "timestamp": 35,
+    "confidence": 0.95
+  },
+  {
+    "id": "k-003",
+    "speaker": "Interviewer",
+    "text": "How are you currently detecting these soldering defects?",
+    "timestamp": 90,
+    "confidence": 0.97
+  },
+  {
+    "id": "k-004",
+    "speaker": "Karthik N.",
+    "text": "We have two quality inspectors with magnifying glasses at the end of the line. It's slow and prone to human error. I've been pushing for an AI vision-based inspection system that can catch these defects at high speed, but we haven't found a solution that's reliable enough for our specific board complexity.",
+    "timestamp": 145,
+    "confidence": 0.94
+  },
+  {
+    "id": "k-005",
+    "speaker": "Interviewer",
+    "text": "If we could automate that detection with 99% accuracy, what would that do to your OEE?",
+    "timestamp": 210,
+    "confidence": 0.99
+  },
+  {
+    "id": "k-006",
+    "speaker": "Karthik N.",
+    "text": "It would be a game-changer. We could probably increase our throughput by 20% without adding a single person to the floor. The ROI on that vision system would be measured in months, not years.",
+    "timestamp": 275,
+    "confidence": 0.96
+  }
+]

@@ -1,0 +1,53 @@
+{
+  "summary": "Interview with CEO Aravind Melligeri of Aequs Limited focusing on operational bottlenecks and strategic roadmap. The primary concern is scaling the aerospace segment to $500M while addressing the profitability drag from the consumer segment. Critical gaps identified include high engineering attrition, the vacant CTO position, and lack of a documented succession plan.",
+  "transcript": "Aravind: Look, we have the Airbus contract, and we are the only integrated aerospace ecosystem in India. Our market cap is strong at ₹7,700 Cr. \nInterviewer: That's impressive. But I see your net profit margin is sitting at -10.6%. What's dragging it down?\nAravind: It's the consumer segment. Aerospace is growing smoothly, but consumer is bleeding our resources and holding back our overall profitability. We need to separate its P&L or spin it off entirely.\nInterviewer: Are you actively looking for a structural solution for that?\nAravind: Absolutely. But honestly, my bigger immediate headache is that our CTO position is vacant. We need engineering leadership to scale to our $500M target, and we are suffering from high attrition in those roles.\nInterviewer: Have you tried automating any of the engineering workflows to reduce dependency?\nAravind: A bit, but we need someone to come in and build an automated RFQ pipeline. We are losing weeks just quoting for new aerospace components.",
+  "sentiment": "Urgent, Frustrated but Optimistic",
+  "nextSteps": [
+    "Hire CTO or Interim Engineering Lead immediately",
+    "Separate consumer segment P&L to stop profitability drain",
+    "Implement Automated RFQ pipeline for aerospace components",
+    "Document formal succession plan for leadership stability"
+  ],
+  "opportunities": [
+    {
+      "id": "opp-aeq-001",
+      "timestamp": 240,
+      "title": "Spin-off Consumer Segment",
+      "description": "Strategically separate the consumer manufacturing segment to focus entirely on core aerospace profitability and reduce overall group debt.",
+      "tag": "Core",
+      "problem_clarity": 4,
+      "budget_score": 3,
+      "origin": "Customer",
+      "activelySeeking": true,
+      "skillset": ["Financial Restructuring", "Executive Strategy"],
+      "toolset": ["ERP Split", "Financial Modeling"],
+      "mindset": ["Visionary Focus", "Risk Management"],
+      "assessment_matrix": {
+        "clarity": 4,
+        "awareness": 4,
+        "attempts": 1,
+        "intensity": 4
+      }
+    },
+    {
+      "id": "opp-aeq-002",
+      "timestamp": 310,
+      "title": "Automated RFQ Processing for Aerospace",
+      "description": "Build an NLP-driven NLP quoting pipeline to reduce the manual delay in quoting and capture more market share in the aerospace components sector.",
+      "tag": "Efficiency",
+      "problem_clarity": 3,
+      "budget_score": 4,
+      "origin": "Interviewer",
+      "activelySeeking": true,
+      "skillset": ["NLP", "Sales Automation", "Process Engineering"],
+      "toolset": ["Python", "FastAPI", "OCR"],
+      "mindset": ["Process Optimization", "Efficiency"],
+      "assessment_matrix": {
+        "clarity": 3,
+        "awareness": 4,
+        "attempts": 2,
+        "intensity": 3
+      }
+    }
+  ]
+}
