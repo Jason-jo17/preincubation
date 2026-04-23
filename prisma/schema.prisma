@@ -1,0 +1,128 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ============ USERS & AUTH ============
+
+enum UserRole {
+  STUDENT
+  MSME
+  MANAGER
+  MENTOR
+  ADMIN
+  GUEST
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String
+  role      UserRole @default(STUDENT)
+  avatar    String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  menteeProfile MenteeProfile?
+  projects      Project[]      @relation("UserProjects")
+  reviewsGiven  Review[]       @relation("Reviewer")
+  reviews       Review[]       @relation("Candidate")
+}
+
+// ============ COHORT MANAGER ============
+
+model MenteeProfile {
+  id          String   @id @default(cuid())
+  userId      String   @unique
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  institution String?
+  cohort      String?
+  trlLevel    Int      @default(1)
+  
+  sprintNodes SprintNode[]
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model SprintNode {
+  id              String        @id @default(cuid())
+  menteeProfileId String
+  menteeProfile   MenteeProfile @relation(fields: [menteeProfileId], references: [id], onDelete: Cascade)
+  
+  sprintNumber    Int
+  name            String
+  targetTrl       Int
+  status          SprintStatus  @default(LOCKED)
+  gatesPassed     Int           @default(0)
+  totalGates      Int
+  
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+}
+
+enum SprintStatus {
+  LOCKED
+  ACTIVE
+  IN_REVIEW
+  COMPLETED
+}
+
+// ============ SHOWCASE ============
+
+model Project {
+  id               String   @id @default(cuid())
+  title            String
+  slug             String   @unique
+  shortDescription String
+  
+  creatorId        String
+  creator          User     @relation("UserProjects", fields: [creatorId], references: [id], onDelete: Cascade)
+  
+  sector           String
+  status           ProjectStatus @default(DRAFT)
+  score            Float    @default(0)
+  
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+}
+
+enum ProjectStatus {
+  DRAFT
+  SUBMITTED
+  INCUBATING
+  PUBLISHED
+}
+
+// ============ MOSI INTERVIEW ============
+
+model Review {
+  id          String   @id @default(cuid())
+  
+  reviewerId  String
+  reviewer    User     @relation("Reviewer", fields: [reviewerId], references: [id])
+  
+  candidateId String
+  candidate   User     @relation("Candidate", fields: [candidateId], references: [id])
+  
+  title       String
+  score       Float
+  sentiment   String
+  feedback    String   @db.Text
+  status      ReviewStatus @default(PENDING)
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+enum ReviewStatus {
+  PENDING
+  REVIEWING
+  COMPLETED
+}

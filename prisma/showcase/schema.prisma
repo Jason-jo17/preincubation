@@ -1,0 +1,479 @@
+// prisma/schema.prisma
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../../src/lib/prisma/showcase"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("SHOWCASE_DATABASE_URL")
+}
+
+
+// ============ USERS & AUTH ============
+
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  name          String
+  role          UserRole  @default(STUDENT)
+  avatar        String?
+  institution   String?
+  company       Company?  @relation(fields: [companyId], references: [id])
+  companyId     String?
+  projects      Project[]
+  inquiries     Inquiry[]
+  reviews       Review[]
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+enum UserRole {
+  STUDENT
+  COMPANY
+  ADMIN
+  REVIEWER
+}
+
+model Company {
+  id              String    @id @default(cuid())
+  name            String
+  msmeIntelId     String?   @unique  // Link to MSME Intel platform
+  sectorIds       String[]
+  size            CompanySize
+  location        String
+  contactEmail    String
+  users           User[]
+  inquiries       Inquiry[]
+  problemStatements ProblemStatement[]
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+}
+
+enum CompanySize {
+  MICRO
+  SMALL
+  MEDIUM
+}
+
+// ============ PROJECTS ============
+
+model Project {
+  id                String    @id @default(cuid())
+  
+  // Basic Info
+  title             String
+  slug              String    @unique
+  shortDescription  String    @db.VarChar(280)
+  fullDescription   String    @db.Text
+  aiEnhancedDescription String? @db.Text
+  
+  // Creator
+  creator           User      @relation(fields: [creatorId], references: [id])
+  creatorId         String
+  teamMembers       String[]
+  institution       String?
+  
+  // Classification
+  projectType       ProjectType
+  ceedCategory      CEEDCategory
+  ceedScore         Float     @default(0)
+  
+  // Tagging
+  sectorTags        SectorTag[]
+  operationTags     OperationTag[]
+  functionalityTags FunctionalityTag[]
+  techStackTags     TechStackTag[]
+  problemStatements ProjectProblemStatement[]
+  
+  // Media & Documentation
+  media             ProjectMedia[]
+  steps             ProjectStep[]
+  flowData          Json?     // React Flow JSON
+  
+  // Pricing
+  pricing           ProjectPricing?
+  
+  // Links
+  demoUrl           String?
+  repoUrl           String?
+  videoUrl          String?
+  documentationUrl  String?
+  
+  // Metrics
+  deployments       Int       @default(0)
+  activeUsers       Int       @default(0)
+  timesSaved        String?
+  roi               String?
+  
+  // Status & Compliance
+  status            ProjectStatus @default(DRAFT)
+  complianceFlags   ComplianceFlag[]
+  complianceScore   Float?
+  isCompliant       Boolean   @default(false)
+  publishedAt       DateTime?
+  
+  // Engagement
+  views             Int       @default(0)
+  inquiries         Inquiry[]
+  reviews           Review[]
+  favorites         Favorite[]
+  
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+}
+
+enum ProjectType {
+  AUTOMATION
+  AGENTIC_WORKFLOW
+  DASHBOARD
+  INTEGRATION
+  CHATBOT
+  ML_MODEL
+  MOBILE_APP
+  WEB_APP
+  API
+  IOT_SOLUTION
+}
+
+enum CEEDCategory {
+  CORE
+  EXPANSION
+  EFFICIENCY
+  DISRUPTION
+}
+
+enum ProjectStatus {
+  DRAFT
+  SUBMITTED
+  IN_REVIEW
+  FLAGGED
+  APPROVED
+  PUBLISHED
+  ARCHIVED
+}
+
+// ============ TAGGING SYSTEM ============
+
+model SectorTag {
+  id          String    @id @default(cuid())
+  sectorId    String
+  sectorName  String
+  isPrimary   Boolean   @default(false)
+  project     Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  projectId   String
+}
+
+model OperationTag {
+  id            String    @id @default(cuid())
+  operationId   String
+  operationName String
+  category      String    // e.g., "Data Processing", "Communication", "Analysis"
+  project       Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  projectId     String
+}
+
+model FunctionalityTag {
+  id                String    @id @default(cuid())
+  functionalityId   String
+  functionalityName String
+  description       String?
+  project           Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  projectId         String
+}
+
+model TechStackTag {
+  id          String    @id @default(cuid())
+  name        String
+  category    TechCategory
+  version     String?
+  project     Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  projectId   String
+}
+
+enum TechCategory {
+  LANGUAGE
+  FRAMEWORK
+  DATABASE
+  CLOUD
+  AI_ML
+  AUTOMATION
+  DEVOPS
+  OTHER
+}
+
+// ============ PROBLEM STATEMENTS ============
+
+model ProblemStatement {
+  id              String    @id @default(cuid())
+  title           String
+  description     String    @db.Text
+  sectorId        String
+  sectorName      String
+  company         Company?  @relation(fields: [companyId], references: [id])
+  companyId       String?
+  msmeIntelId     String?   // Link to MSME Intel
+  urgency         Urgency   @default(MEDIUM)
+  budget          String?
+  timeline        String?
+  linkedProjects  ProjectProblemStatement[]
+  status          ProblemStatus @default(OPEN)
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+}
+
+enum Urgency {
+  LOW
+  MEDIUM
+  HIGH
+  CRITICAL
+}
+
+enum ProblemStatus {
+  OPEN
+  IN_PROGRESS
+  MATCHED
+  RESOLVED
+  CLOSED
+}
+
+model ProjectProblemStatement {
+  id                String    @id @default(cuid())
+  project           Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  projectId         String
+  problemStatement  ProblemStatement @relation(fields: [problemStatementId], references: [id])
+  problemStatementId String
+  fitScore          Float?
+  fitExplanation    String?
+  status            MatchStatus @default(SUGGESTED)
+  createdAt         DateTime  @default(now())
+}
+
+enum MatchStatus {
+  SUGGESTED
+  PENDING_REVIEW
+  APPROVED
+  REJECTED
+  CONNECTED
+}
+
+// ============ MEDIA & STEPS ============
+
+model ProjectMedia {
+  id          String    @id @default(cuid())
+  type        MediaType
+  url         String
+  caption     String?
+  order       Int       @default(0)
+  project     Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  projectId   String
+  createdAt   DateTime  @default(now())
+}
+
+enum MediaType {
+  IMAGE
+  VIDEO
+  GIF
+  DOCUMENT
+  DIAGRAM
+}
+
+model ProjectStep {
+  id          String    @id @default(cuid())
+  stepNumber  Int
+  title       String
+  description String    @db.Text
+  imageUrl    String?
+  videoUrl    String?
+  codeSnippet String?   @db.Text
+  tips        String[]
+  project     Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  projectId   String
+}
+
+// ============ PRICING ============
+
+model ProjectPricing {
+  id              String    @id @default(cuid())
+  project         Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  projectId       String    @unique
+  
+  // Pricing Model
+  model           PricingModel
+  
+  // One-time
+  basePrice       Float?
+  
+  // Subscription
+  monthlyPrice    Float?
+  yearlyPrice     Float?
+  
+  // Usage-based
+  pricePerUnit    Float?
+  unitType        String?   // "API call", "user", "transaction", etc.
+  freeQuota       Int?
+  
+  // Implementation
+  implementationFee Float?
+  estimatedHours    Int?
+  
+  // Customization
+  customizationRate Float?   // Hourly rate
+  
+  // Support
+  supportIncluded   Boolean @default(false)
+  supportFee        Float?
+  
+  currency        String    @default("INR")
+  notes           String?
+  
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+}
+
+enum PricingModel {
+  FREE
+  ONE_TIME
+  SUBSCRIPTION
+  USAGE_BASED
+  CUSTOM
+  CONTACT
+}
+
+// ============ COMPLIANCE ============
+
+model ComplianceFlag {
+  id          String    @id @default(cuid())
+  project     Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  projectId   String
+  ruleId      String
+  ruleName    String
+  severity    FlagSeverity
+  category    FlagCategory
+  message     String
+  suggestion  String?
+  autoFixable Boolean   @default(false)
+  autoFixCode String?   @db.Text
+  isResolved  Boolean   @default(false)
+  resolvedAt  DateTime?
+  resolvedBy  String?
+  resolution  String?
+  createdAt   DateTime  @default(now())
+}
+
+enum FlagSeverity {
+  INFO
+  WARNING
+  ERROR
+  CRITICAL
+}
+
+enum FlagCategory {
+  CONTENT
+  SECURITY
+  LICENSING
+  DOCUMENTATION
+  TECHNICAL
+  LEGAL
+  QUALITY
+}
+
+// ============ ENGAGEMENT ============
+
+model Inquiry {
+  id            String    @id @default(cuid())
+  project       Project   @relation(fields: [projectId], references: [id])
+  projectId     String
+  
+  // Inquirer
+  user          User?     @relation(fields: [userId], references: [id])
+  userId        String?
+  company       Company?  @relation(fields: [companyId], references: [id])
+  companyId     String?
+  
+  // Contact (for non-registered)
+  contactName   String?
+  contactEmail  String?
+  contactPhone  String?
+  companyName   String?
+  
+  // Inquiry Details
+  type          InquiryType
+  message       String    @db.Text
+  requirements  String?   @db.Text
+  budget        String?
+  timeline      String?
+  
+  // Attachments
+  attachments   String[]
+  
+  // Status
+  status        InquiryStatus @default(NEW)
+  response      String?   @db.Text
+  respondedAt   DateTime?
+  
+  // Notifications
+  sentToCompany Boolean   @default(false)
+  sentAt        DateTime?
+  
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+enum InquiryType {
+  DEMO_REQUEST
+  PRICING_INQUIRY
+  CUSTOMIZATION
+  IMPLEMENTATION
+  PARTNERSHIP
+  GENERAL
+}
+
+enum InquiryStatus {
+  NEW
+  VIEWED
+  IN_PROGRESS
+  RESPONDED
+  CONVERTED
+  CLOSED
+}
+
+model Review {
+  id          String    @id @default(cuid())
+  project     Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  projectId   String
+  user        User      @relation(fields: [userId], references: [id])
+  userId      String
+  rating      Int       // 1-5
+  title       String?
+  content     String?   @db.Text
+  isVerified  Boolean   @default(false)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  
+  @@unique([projectId, userId])
+}
+
+model Favorite {
+  id          String    @id @default(cuid())
+  project     Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  projectId   String
+  userId      String
+  createdAt   DateTime  @default(now())
+  
+  @@unique([projectId, userId])
+}
+
+// ============ ANALYTICS ============
+
+model AnalyticsEvent {
+  id          String    @id @default(cuid())
+  eventType   String
+  projectId   String?
+  userId      String?
+  companyId   String?
+  sectorId    String?
+  metadata    Json?
+  timestamp   DateTime  @default(now())
+}
