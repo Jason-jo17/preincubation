@@ -439,7 +439,6 @@ export const useMosiStore = create<MosiStore>()(
       setSessions: () => {},
       updateStakeholder: async () => {},
       deleteStakeholder: async () => {},
-      setProfiles: () => {},
     }),
     { name: 'mosi-storage' }
   )

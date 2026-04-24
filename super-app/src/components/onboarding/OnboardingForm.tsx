@@ -19,6 +19,8 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
+import { ProfilerStep } from "./ProfilerStep";
+import { TeamProfile } from "@/types/profiler.types";
 
 type Role = "STUDENT" | "STAKEHOLDER" | "ADMIN";
 
@@ -31,6 +33,7 @@ export function OnboardingForm() {
     email: "",
     organization: "",
     bio: "",
+    profilerData: null as TeamProfile | null,
   });
 
   const nextStep = () => setStep(s => s + 1);
@@ -41,17 +44,47 @@ export function OnboardingForm() {
     nextStep();
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleContextSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Simulate API call
-    setStep(4);
+    if (formData.role === "STUDENT") {
+      setStep(4);
+    } else {
+      finalizeOnboarding();
+    }
+  };
+
+  const finalizeOnboarding = async (profilerData?: TeamProfile) => {
+    if (profilerData) {
+      setFormData(prev => ({ ...prev, profilerData }));
+    }
+    
+    // Final step is success screen
+    setStep(5);
+    // Call the API to save all data
+    try {
+      const payload = { ...formData, profilerData };
+      const res = await fetch('/api/onboarding', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      if (!res.ok) {
+        console.error("Failed to save onboarding data");
+      }
+    } catch (err) {
+      console.error("Error saving onboarding data", err);
+    }
+    
     setTimeout(() => {
       router.push("/");
-    }, 2000);
+    }, 3000);
   };
 
   return (
-    <div className="max-w-xl mx-auto w-full px-6">
+    <div className={cn(
+      "mx-auto w-full px-6 transition-all duration-500",
+      step === 4 ? "max-w-6xl" : "max-w-xl"
+    )}>
       <AnimatePresence mode="wait">
         {step === 1 && (
           <motion.div
@@ -183,7 +216,7 @@ export function OnboardingForm() {
               <p className="text-text-secondary">Where are you operating from?</p>
             </div>
 
-            <form onSubmit={handleSubmit} className="space-y-6">
+            <form onSubmit={handleContextSubmit} className="space-y-6">
               <div className="space-y-2">
                 <Label htmlFor="org" className="text-xs font-bold uppercase tracking-widest text-text-muted">
                   {formData.role === "STUDENT" ? "Institution / College" : "Organization / Firm"}
@@ -212,8 +245,8 @@ export function OnboardingForm() {
                 disabled={!formData.organization}
                 className="w-full h-14 text-lg font-bold rounded-xl gap-2 shadow-xl shadow-accent/20 bg-success hover:bg-success/90 text-bg-base"
               >
-                Complete Onboarding
-                <CheckCircle2 className="w-5 h-5" />
+                {formData.role === "STUDENT" ? "Next: Venture Profiler" : "Complete Onboarding"}
+                {formData.role === "STUDENT" ? <ArrowRight className="w-5 h-5" /> : <CheckCircle2 className="w-5 h-5" />}
               </Button>
             </form>
           </motion.div>
@@ -222,6 +255,25 @@ export function OnboardingForm() {
         {step === 4 && (
           <motion.div
             key="step4"
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -20 }}
+          >
+            <ProfilerStep 
+              onComplete={finalizeOnboarding} 
+              onBack={prevStep}
+              initialData={{
+                startupName: formData.organization,
+                institution: formData.organization,
+                interviewer: formData.name,
+              }}
+            />
+          </motion.div>
+        )}
+
+        {step === 5 && (
+          <motion.div
+            key="step5"
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             className="text-center space-y-6 py-12"

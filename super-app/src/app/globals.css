@@ -15,6 +15,17 @@
   --color-success: #1EC075;
   --color-warning: #FECE0A;
 
+  /* Profiler specific colors */
+  --color-navy: #1C2A3B;
+  --color-gold: #FECE0A;
+  --color-teal: #1EC075;
+  --color-coral: #DC143C;
+  --color-smoke: #8E959D;
+  --color-silver: #C0C0C0;
+  --color-rule: #EAEBF5;
+  --color-purple: #786BF9;
+  --color-purple-lt: rgba(120, 107, 249, 0.05);
+
   --radius-xs: 4px;
   --radius-sm: 8px;
   --radius-md: 12px;
@@ -116,6 +127,7 @@
   .text-gradient {
     background: linear-gradient(to bottom right, var(--color-text-primary), var(--color-text-secondary));
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
   }
 

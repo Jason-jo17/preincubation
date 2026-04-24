@@ -29,9 +29,29 @@ model User {
 
   // Relations
   menteeProfile MenteeProfile?
+  startupProfile StartupProfile?
   projects      Project[]      @relation("UserProjects")
   reviewsGiven  Review[]       @relation("Reviewer")
   reviews       Review[]       @relation("Candidate")
+}
+
+// ============ PROFILER ============
+
+model StartupProfile {
+  id              String   @id @default(cuid())
+  userId          String   @unique
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  startupName     String
+  institution     String?
+  detectedStage   String
+  overallScore    Float
+  
+  // Storing the entire 9-parameter diagnostic data
+  profilerData    Json
+
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 }
 
 // ============ COHORT MANAGER ============
