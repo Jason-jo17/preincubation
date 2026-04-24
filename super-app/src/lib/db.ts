@@ -12,18 +12,33 @@ function createSafePrismaClient<T extends { $connect: () => Promise<void> }>(
   if (!url) {
     console.warn(`[Prisma] ${name} database URL not found (${envVarName}). Returning mock client.`)
     // Return a Proxy that intercepts all calls to prevent crashes
-    return new Proxy({} as T, {
-      get: (target, prop) => {
-        if (prop === '$connect') return () => Promise.resolve()
-        if (prop === '$disconnect') return () => Promise.resolve()
-        
-        // Return a function that returns an empty array or null for common Prisma methods
-        return () => {
-          console.warn(`[Prisma] Attempted to call ${String(prop)} on missing ${name} database.`)
+    const createRecursiveProxy = (targetName: string): any => {
+      return new Proxy(() => {}, {
+        get: (target, prop) => {
+          if (prop === '$connect' || prop === '$disconnect') return () => Promise.resolve()
+          
+          const fullName = `${targetName}.${String(prop)}`
+          // If it looks like a Prisma method (common ones), return the mock resolver
+          const prismaMethods = ['findMany', 'findUnique', 'findFirst', 'create', 'update', 'delete', 'upsert', 'count', 'aggregate', 'groupBy']
+          if (prismaMethods.includes(String(prop))) {
+            return () => {
+              console.warn(`[Prisma] Attempted to call ${fullName} on missing database.`)
+              return Promise.resolve([])
+            }
+          }
+
+          // Otherwise, return another proxy for the next level
+          return createRecursiveProxy(fullName)
+        },
+        // Handle direct calls if the proxy is called as a function
+        apply: (target, thisArg, argumentsList) => {
+          console.warn(`[Prisma] Attempted to call ${targetName} as a function on missing database.`)
           return Promise.resolve([])
         }
-      }
-    })
+      })
+    }
+
+    return createRecursiveProxy(name) as T
   }
 
   try {

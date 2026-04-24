@@ -28,7 +28,8 @@ const TOOLS = [
   { id: "T4", name: "Resource Inventory", status: "Gate Passed", gate: true, desc: "Infrastructure availability confirmed." },
 ];
 
-export default function SprintDetailPage({ params }: { params: { sprintNumber: string } }) {
+export default function SprintDetailPage({ params }: { params: Promise<{ sprintNumber: string }> }) {
+  const { sprintNumber } = React.use(params);
   return (
     <div className="p-8 space-y-8 max-w-7xl mx-auto">
       {/* Header */}
@@ -40,7 +41,7 @@ export default function SprintDetailPage({ params }: { params: { sprintNumber: s
            </Link>
            <div className="space-y-2">
               <div className="flex items-center gap-2">
-                 <Badge variant="outline" className="text-[9px] font-black uppercase tracking-widest border-accent/20 text-accent px-3">Sprint {params.sprintNumber}</Badge>
+                 <Badge variant="outline" className="text-[9px] font-black uppercase tracking-widest border-accent/20 text-accent px-3">Sprint {sprintNumber}</Badge>
                  <Badge className="bg-success/10 text-success border border-success/20 text-[9px] font-black uppercase tracking-widest px-3">TRL 3-4 Focus</Badge>
               </div>
               <h1 className="text-4xl font-black italic tracking-tighter uppercase">
