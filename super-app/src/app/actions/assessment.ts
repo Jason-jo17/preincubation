@@ -9,6 +9,9 @@ export async function saveReadinessAssessment(data: {
   scores: any;
   levels: any;
   stage?: string;
+  peerScores?: any;
+  mentorScores?: any;
+  mentorNotes?: any;
 }) {
   try {
     const session = await getServerSession(authOptions);
@@ -19,6 +22,9 @@ export async function saveReadinessAssessment(data: {
         scores: data.scores,
         levels: data.levels,
         stage: data.stage,
+        peerScores: data.peerScores || {},
+        mentorScores: data.mentorScores || {},
+        mentorNotes: data.mentorNotes || {},
       },
     });
 
@@ -32,6 +38,37 @@ export async function saveReadinessAssessment(data: {
     };
   } catch (error: any) {
     console.error("Error saving readiness assessment:", error);
+    return { success: false, error: error.message };
+  }
+}
+
+export async function updateReadinessAssessment(id: string, data: {
+  scores?: any;
+  levels?: any;
+  stage?: string;
+  peerScores?: any;
+  mentorScores?: any;
+  mentorNotes?: any;
+}) {
+  try {
+    const assessment = await prisma.readinessAssessment.update({
+      where: { id },
+      data: {
+        ...data,
+      },
+    });
+
+    revalidatePath(`/assessment/${id}`);
+    revalidatePath(`/assessment/${id}/validation`);
+    revalidatePath(`/assessment/${id}/notes`);
+    
+    return { 
+      success: true, 
+      id: assessment.id, 
+      message: "Venture Readiness Assessment updated successfully." 
+    };
+  } catch (error: any) {
+    console.error("Error updating readiness assessment:", error);
     return { success: false, error: error.message };
   }
 }
@@ -57,6 +94,21 @@ export async function getLatestReadinessAssessment(userIdParam?: string) {
       orderBy: { createdAt: "desc" },
     });
     return { success: true, data: assessment };
+  } catch (error: any) {
+    return { success: false, error: error.message };
+  }
+}
+
+export async function getAllReadinessAssessments(userIdParam?: string) {
+  try {
+    const session = await getServerSession(authOptions);
+    const userId = userIdParam || (session?.user as any)?.id || "guest_user";
+
+    const assessments = await prisma.readinessAssessment.findMany({
+      where: { userId },
+      orderBy: { createdAt: "desc" },
+    });
+    return { success: true, data: assessments };
   } catch (error: any) {
     return { success: false, error: error.message };
   }

@@ -1,25 +1,48 @@
-import React from 'react'
-import { AssessmentHub } from '@/components/assessment/AssessmentHub'
+"use client";
 
-export const metadata = {
-  title: 'New Assessment | InUnity Venture Readiness',
-  description: 'Complete the 8-pillar diagnostic to map your venture roadmap.',
-}
+import React, { useEffect } from "react";
+import { useAssessmentStore } from "@/lib/store/assessment";
+import { AssessmentHub } from "@/components/assessment/AssessmentHub";
+import { motion } from "framer-motion";
+import { Zap } from "lucide-react";
 
 export default function NewAssessmentPage() {
+  const resetScores = useAssessmentStore((state) => state.resetScores);
+
+  useEffect(() => {
+    resetScores();
+  }, [resetScores]);
+
   return (
-    <main className="min-h-screen bg-bg-base pt-12 pb-24">
-      <div className="max-w-7xl mx-auto px-6 mb-12">
-        <div className="flex items-center gap-3 mb-2">
-          <div className="px-3 py-1 rounded-full bg-accent/10 border border-accent/20 text-accent text-[10px] font-black uppercase tracking-widest">
-            V3 Diagnostic System
+    <div className="min-h-screen bg-bg-base pb-24">
+      <div className="p-6 border-b border-border bg-bg-surface/50 backdrop-blur-md sticky top-0 z-30">
+        <div className="max-w-[1600px] mx-auto flex items-center justify-between">
+          <div className="flex items-center gap-4">
+            <div className="w-10 h-10 rounded-xl bg-accent flex items-center justify-center shadow-lg shadow-accent/20">
+              <Zap className="w-6 h-6 text-bg-base" />
+            </div>
+            <div>
+              <h1 className="text-[11px] font-black uppercase tracking-widest text-text-muted">Diagnostic Node</h1>
+              <p className="text-lg font-black tracking-tighter">NEW VENTURE ASSESSMENT</p>
+            </div>
+          </div>
+          
+          <div className="flex items-center gap-6">
+            <div className="text-right hidden md:block">
+              <p className="text-[10px] font-black uppercase tracking-widest text-text-muted">Assessment Mode</p>
+              <p className="text-xs font-bold text-accent">INITIAL SCAN V1.0</p>
+            </div>
           </div>
         </div>
-        <h1 className="text-4xl font-black tracking-tighter text-text">Venture Readiness Diagnostic</h1>
-        <p className="text-text-muted mt-2">Evaluate your startup across 8 frameworks to generate your growth roadmap.</p>
       </div>
 
-      <AssessmentHub />
-    </main>
-  )
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5 }}
+      >
+        <AssessmentHub />
+      </motion.div>
+    </div>
+  );
 }

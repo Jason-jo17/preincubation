@@ -23,6 +23,17 @@ export default withAuth(
       return NextResponse.redirect(new URL("/onboarding", req.url));
     }
 
+    // Assessment Protection
+    if (path.startsWith("/assessment")) {
+      if (!token) return NextResponse.redirect(new URL("/onboarding", req.url));
+      
+      // Validation and Notes are Mentor/Admin only
+      if ((path.includes("/validation") || path.includes("/notes")) && 
+          (token.role !== "MENTOR" && token.role !== "ADMIN")) {
+        return NextResponse.redirect(new URL("/assessment", req.url));
+      }
+    }
+
     return NextResponse.next();
   },
   {
@@ -41,6 +52,7 @@ export const config = {
     "/dashboard/:path*",
     "/student/:path*",
     "/mentor/:path*",
-    "/admin/:path*"
+    "/admin/:path*",
+    "/assessment/:path*"
   ],
 };

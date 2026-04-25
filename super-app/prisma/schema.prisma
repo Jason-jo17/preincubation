@@ -28,67 +28,68 @@ model User {
   updatedAt DateTime @updatedAt
 
   // Relations
-  menteeProfile MenteeProfile?
-  startupProfile StartupProfile?
-  projects      Project[]      @relation("UserProjects")
-  reviewsGiven  Review[]       @relation("Reviewer")
-  reviews       Review[]       @relation("Candidate")
-  assessments   Assessment[]
-  toolSubmissions ToolSubmission[]
-  interactions  Interaction[]
-  mosiSessions  MosiSession[]
+  menteeProfile        MenteeProfile?
+  startupProfile       StartupProfile?
+  projects             Project[]             @relation("UserProjects")
+  reviewsGiven         Review[]              @relation("Reviewer")
+  reviews              Review[]              @relation("Candidate")
+  assessments          Assessment[]
+  readinessAssessments ReadinessAssessment[]
+  toolSubmissions      ToolSubmission[]
+  interactions         Interaction[]
+  mosiSessions         MosiSession[]
 }
 
 // ============ PROFILER ============
 
 model StartupProfile {
-  id              String   @id @default(cuid())
-  userId          String   @unique
-  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  
-  startupName     String
-  institution     String?
-  detectedStage   String
-  overallScore    Float
-  
-  // Storing the entire 9-parameter diagnostic data
-  profilerData    Json
+  id     String @id @default(cuid())
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+  startupName   String
+  institution   String?
+  detectedStage String
+  overallScore  Float
+
+  // Storing the entire 9-parameter diagnostic data
+  profilerData Json
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 // ============ COHORT MANAGER ============
 
 model MenteeProfile {
-  id          String   @id @default(cuid())
-  userId      String   @unique
-  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  
+  id     String @id @default(cuid())
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
   institution String?
   cohort      String?
-  trlLevel    Int      @default(1)
-  
+  trlLevel    Int     @default(1)
+
   sprintNodes SprintNode[]
-  
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model SprintNode {
   id              String        @id @default(cuid())
   menteeProfileId String
   menteeProfile   MenteeProfile @relation(fields: [menteeProfileId], references: [id], onDelete: Cascade)
-  
-  sprintNumber    Int
-  name            String
-  targetTrl       Int
-  status          SprintStatus  @default(LOCKED)
-  gatesPassed     Int           @default(0)
-  totalGates      Int
-  
-  createdAt       DateTime      @default(now())
-  updatedAt       DateTime      @updatedAt
+
+  sprintNumber Int
+  name         String
+  targetTrl    Int
+  status       SprintStatus @default(LOCKED)
+  gatesPassed  Int          @default(0)
+  totalGates   Int
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 enum SprintStatus {
@@ -101,20 +102,20 @@ enum SprintStatus {
 // ============ SHOWCASE ============
 
 model Project {
-  id               String   @id @default(cuid())
+  id               String @id @default(cuid())
   title            String
-  slug             String   @unique
+  slug             String @unique
   shortDescription String
-  
-  creatorId        String
-  creator          User     @relation("UserProjects", fields: [creatorId], references: [id], onDelete: Cascade)
-  
-  sector           String
-  status           ProjectStatus @default(DRAFT)
-  score            Float    @default(0)
-  
-  createdAt        DateTime @default(now())
-  updatedAt        DateTime @updatedAt
+
+  creatorId String
+  creator   User   @relation("UserProjects", fields: [creatorId], references: [id], onDelete: Cascade)
+
+  sector String
+  status ProjectStatus @default(DRAFT)
+  score  Float         @default(0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 enum ProjectStatus {
@@ -127,22 +128,22 @@ enum ProjectStatus {
 // ============ MOSI INTERVIEW ============
 
 model Review {
-  id          String   @id @default(cuid())
-  
-  reviewerId  String
-  reviewer    User     @relation("Reviewer", fields: [reviewerId], references: [id])
-  
+  id String @id @default(cuid())
+
+  reviewerId String
+  reviewer   User   @relation("Reviewer", fields: [reviewerId], references: [id])
+
   candidateId String
-  candidate   User     @relation("Candidate", fields: [candidateId], references: [id])
-  
-  title       String
-  score       Float
-  sentiment   String
-  feedback    String   @db.Text
-  status      ReviewStatus @default(PENDING)
-  
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  candidate   User   @relation("Candidate", fields: [candidateId], references: [id])
+
+  title     String
+  score     Float
+  sentiment String
+  feedback  String       @db.Text
+  status    ReviewStatus @default(PENDING)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 enum ReviewStatus {
@@ -154,38 +155,38 @@ enum ReviewStatus {
 // ============ ASSESSMENT & TOOLS ============
 
 model Assessment {
-  id           String   @id @default(cuid())
-  userId       String
-  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  
-  type         String   // "readiness"
-  toolId       String   // "venture_readiness"
-  
+  id     String @id @default(cuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  type   String // "readiness"
+  toolId String // "venture_readiness"
+
   // Scoring Data
   overallScore Float
-  pillarScores Json     // Detailed scores for P1-P9
-  
+  pillarScores Json // Detailed scores for P1-P9
+
   // Qualitative Data
-  data         Json     // Full assessment response
-  
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  data Json // Full assessment response
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@index([userId])
 }
 
 model ToolSubmission {
-  id           String   @id @default(cuid())
-  userId       String
-  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  
-  toolId       String   // "swot", "pestle", etc.
-  iteration    Int      @default(1)
-  
-  data         Json     // Tool-specific output
-  
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  id     String @id @default(cuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  toolId    String // "swot", "pestle", etc.
+  iteration Int    @default(1)
+
+  data Json // Tool-specific output
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@index([userId])
   @@index([toolId])
@@ -194,59 +195,66 @@ model ToolSubmission {
 // ============ VENTURE READINESS DIAGNOSTIC ============
 
 model ReadinessAssessment {
-  id           String   @id @default(cuid())
-  userId       String
-  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id     String @id @default(cuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   // Mapping of frameworkId -> levelIndex -> questionIndex -> score
-  scores       Json
-  
+  scores Json
+
+  // Peer and Mentor scores for comparison
+  peerScores   Json? // Optional: stores peer evaluation data
+  mentorScores Json? // Optional: stores mentor evaluation data
+
+  // Mentor feedback notes (frameworkId -> note)
+  mentorNotes Json?
+
   // Mapping of frameworkId -> currentLevel (1-9)
-  levels       Json
-  
+  levels Json
+
   // Aggregate score or stage
-  stage        String?  // e.g. "POC", "MVP"
-  
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  stage String? // e.g. "POC", "MVP"
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@index([userId])
 }
 
 model Interaction {
-  id           String   @id @default(cuid())
-  userId       String
-  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  
-  stakeholder  String
-  role         String?
-  type         String   // "Meeting", "Interview", "Audit", etc.
-  summary      String   @db.Text
-  sentiment    String?  // "Positive", "Neutral", "Negative"
-  insights     Int      @default(0)
-  
-  date         DateTime @default(now())
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  id     String @id @default(cuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  stakeholder String
+  role        String?
+  type        String // "Meeting", "Interview", "Audit", etc.
+  summary     String  @db.Text
+  sentiment   String? // "Positive", "Neutral", "Negative"
+  insights    Int     @default(0)
+
+  date      DateTime @default(now())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@index([userId])
 }
 
 model MosiSession {
-  id              String   @id @default(cuid())
-  userId          String
-  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  
+  id     String @id @default(cuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
   stakeholderName String
   company         String?
-  location        String   // "VIDEO CALL", "OFFICE NODE", etc.
-  status          String   @default("Scheduled") // "Scheduled", "Completed", "Cancelled"
-  
-  date            DateTime
-  time            String
-  
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+  location        String // "VIDEO CALL", "OFFICE NODE", etc.
+  status          String  @default("Scheduled") // "Scheduled", "Completed", "Cancelled"
+
+  date DateTime
+  time String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@index([userId])
 }

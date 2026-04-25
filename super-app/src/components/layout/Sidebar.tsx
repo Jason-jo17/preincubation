@@ -21,7 +21,8 @@ import {
   Map,
   FileText,
   Activity,
-  UserCircle
+  UserCircle,
+  Shield
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
@@ -67,6 +68,17 @@ const navItems: NavItem[] = [
       { name: "My Dashboard", href: "/student" },
       { name: "Journey Roadmap", href: "/student/roadmap" },
       { name: "Interactions Log", href: "/student/interactions" },
+    ]
+  },
+  { 
+    name: "Readiness Diagnostic", 
+    href: "/assessment", 
+    icon: Activity,
+    roles: ["STUDENT", "ADMIN", "MENTOR"],
+    subItems: [
+      { name: "Diagnostic Hub", href: "/assessment" },
+      { name: "New Assessment", href: "/assessment/new" },
+      { name: "Growth Playbook", href: "/assessment/playbook" },
     ]
   },
   { 
