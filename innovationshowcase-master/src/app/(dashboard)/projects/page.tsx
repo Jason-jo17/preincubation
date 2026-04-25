@@ -41,12 +41,12 @@ export default function MyProjectsPage() {
     <div className="space-y-12">
       <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8 mb-8">
         <div className="space-y-2">
-           <h1 className="text-4xl font-extrabold text-slate-900 tracking-tighter">My Innovation Hub</h1>
-           <p className="text-slate-500 font-medium max-w-lg">Lifecycle management and analytics for your regional industrial deployments.</p>
+           <h1 className="text-4xl font-black text-text-primary tracking-tighter font-display">My Innovation Hub</h1>
+           <p className="text-text-secondary font-medium max-w-lg">Lifecycle management and analytics for your regional industrial deployments.</p>
         </div>
 
 
-        <button className="px-8 py-4 bg-slate-900 text-white rounded-2xl font-black text-xs tracking-widest hover:scale-105 active:scale-95 transition-all shadow-xl">
+        <button className="px-8 py-4 bg-text-primary text-bg-surface rounded-2xl font-black text-xs tracking-widest hover:scale-105 active:scale-95 transition-all shadow-xl font-display">
            NEW CYCLE <span>+</span>
         </button>
 
@@ -55,12 +55,12 @@ export default function MyProjectsPage() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {USER_PROJECTS.map((project, i) => (
           <div key={project.id} className="relative group">
-             <div className="absolute top-4 right-4 z-20 px-2 py-1 rounded bg-white/90 backdrop-blur-md border border-slate-100 text-[8px] font-black tracking-widest uppercase shadow-sm">
+             <div className="absolute top-4 right-4 z-20 px-2 py-1 rounded bg-bg-surface/90 backdrop-blur-md border border-border text-[8px] font-black tracking-widest uppercase shadow-sm font-display">
 
                 {project.status === 'ACTIVE' ? (
-                   <span className="text-emerald-500 flex items-center gap-1.5"><span className="w-1 h-1 rounded-full bg-emerald-500 animate-pulse" /> Live</span>
+                   <span className="text-success flex items-center gap-1.5"><span className="w-1 h-1 rounded-full bg-success animate-pulse" /> Live</span>
                 ) : (
-                   <span className="text-slate-500 flex items-center gap-1.5"><span className="w-1 h-1 rounded-full bg-slate-500" /> Draft</span>
+                   <span className="text-text-muted flex items-center gap-1.5"><span className="w-1 h-1 rounded-full bg-text-muted" /> Draft</span>
                 )}
              </div>
              <motion.div
@@ -73,18 +73,18 @@ export default function MyProjectsPage() {
           </div>
         ))}
 
-        <button className="h-[400px] border-2 border-dashed border-slate-200 rounded-[3rem] bg-slate-50 flex flex-col items-center justify-center gap-4 group hover:bg-white hover:border-amber-500/30 transition-all shadow-sm">
-           <div className="w-16 h-16 rounded-full bg-white border border-slate-100 flex items-center justify-center text-2xl text-slate-400 group-hover:text-amber-500 group-hover:scale-110 transition-all duration-500 shadow-lg">+</div>
-           <div className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Mint Innovation Node</div>
+        <button className="h-[400px] border-2 border-dashed border-border rounded-[3rem] bg-bg-base flex flex-col items-center justify-center gap-4 group hover:bg-bg-surface hover:border-accent/30 transition-all shadow-sm">
+           <div className="w-16 h-16 rounded-full bg-bg-surface border border-border flex items-center justify-center text-2xl text-text-muted group-hover:text-accent group-hover:scale-110 transition-all duration-500 shadow-lg font-display">+</div>
+           <div className="text-[10px] font-black text-text-muted uppercase tracking-widest font-display">Mint Innovation Node</div>
         </button>
 
       </div>
 
-      <div className="bg-white/80 backdrop-blur-3xl border border-slate-100 rounded-[3rem] p-12 mt-20 shadow-xl">
+      <div className="bg-bg-surface/80 backdrop-blur-3xl border border-border rounded-[3rem] p-12 mt-20 shadow-xl">
          <div className="flex flex-col md:flex-row items-center justify-between gap-12">
             <div className="space-y-4">
-              <h3 className="text-2xl font-black text-slate-900 tracking-tighter">Innovation Analytics</h3>
-              <p className="text-slate-500 text-sm font-medium leading-relaxed max-w-lg">Track how your agentic workflows are performing across multiple MSME endpoints in Dakshina Kannada.</p>
+              <h3 className="text-2xl font-black text-text-primary tracking-tighter font-display">Innovation Analytics</h3>
+              <p className="text-text-secondary text-sm font-medium leading-relaxed max-w-lg">Track how your agentic workflows are performing across multiple MSME endpoints in Dakshina Kannada.</p>
             </div>
 
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-6">
@@ -93,9 +93,9 @@ export default function MyProjectsPage() {
                  { label: 'Active Links', val: '2' },
                  { label: 'Deployments', val: '2' },
                ].map(stat => (
-                 <div key={stat.label} className="px-6 py-4 bg-slate-50 border border-slate-100 rounded-2xl text-center shadow-sm">
-                    <div className="text-xl font-black text-slate-900">{stat.val}</div>
-                    <div className="text-[8px] font-black text-slate-400 uppercase tracking-widest mt-1">{stat.label}</div>
+                 <div key={stat.label} className="px-6 py-4 bg-bg-base border border-border rounded-2xl text-center shadow-sm">
+                    <div className="text-xl font-black text-text-primary font-display">{stat.val}</div>
+                    <div className="text-[8px] font-black text-text-muted uppercase tracking-widest mt-1 font-display">{stat.label}</div>
                  </div>
                ))}
 
