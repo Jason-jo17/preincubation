@@ -7,7 +7,11 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { saveToolData } from "@/app/actions/roadmap"
 import { toast } from "sonner"
-import { Save, Loader2, AlertCircle, Lightbulb, Target, Zap, Users, BarChart3, Share2, CreditCard, DollarSign } from "lucide-react"
+import { 
+  Save, Loader2, HelpCircle, Target, Users, 
+  Zap, TrendingUp, DollarSign, ListChecks, ShieldCheck 
+} from "lucide-react"
+import { cn } from "@/lib/utils"
 
 interface LeanCanvasToolProps {
     tool: any
@@ -20,11 +24,11 @@ export function LeanCanvasTool({ tool, progress, onDataSaved, submissionId }: Le
     const initialData = progress?.data || {
         problem: "",
         solution: "",
-        uniqueValueProposition: "",
-        unfairAdvantage: "",
-        customerSegments: "",
         keyMetrics: "",
+        uniqueValueProp: "",
+        unfairAdvantage: "",
         channels: "",
+        customerSegments: "",
         costStructure: "",
         revenueStreams: ""
     }
@@ -53,134 +57,67 @@ export function LeanCanvasTool({ tool, progress, onDataSaved, submissionId }: Le
         }
     }
 
-    const Block = ({ id, label, icon: Icon, placeholder, hint, className = "" }: any) => (
-        <div className={`p-4 border border-text-muted/10 bg-white group flex flex-col ${className}`}>
-            <div className="flex items-center gap-2 mb-2">
-                <Icon className="w-4 h-4 text-accent" />
-                <Label className="text-[10px] font-black uppercase tracking-widest">{label}</Label>
-            </div>
-            <Textarea
-                placeholder={placeholder}
-                value={(data as any)[id]}
-                onChange={(e) => setData({ ...data, [id]: e.target.value })}
-                className="flex-1 min-h-[100px] border-none bg-transparent resize-none p-0 text-xs focus-visible:ring-0 placeholder:text-text-muted/30 font-medium custom-scrollbar"
-            />
-            <p className="text-[8px] text-text-muted/50 font-medium mt-2 uppercase opacity-0 group-hover:opacity-100 transition-opacity">
-                {hint}
-            </p>
-        </div>
-    )
+    const sections = [
+        { id: 'problem', label: 'Problem', icon: HelpCircle, color: 'text-red-500', col: 'col-span-2 row-span-2', hint: 'Top 3 problems' },
+        { id: 'solution', label: 'Solution', icon: Zap, color: 'text-yellow-500', col: 'col-span-2', hint: 'Top 3 features' },
+        { id: 'keyMetrics', label: 'Key Metrics', icon: TrendingUp, color: 'text-blue-500', col: 'col-span-2', hint: 'Key activities you measure' },
+        { id: 'uniqueValueProp', label: 'Unique Value Prop', icon: Target, color: 'text-purple-500', col: 'col-span-2 row-span-2', hint: 'Single, clear, compelling message' },
+        { id: 'unfairAdvantage', label: 'Unfair Advantage', icon: ShieldCheck, color: 'text-orange-500', col: 'col-span-2', hint: 'Can’t be easily copied' },
+        { id: 'channels', label: 'Channels', icon: ListChecks, color: 'text-emerald-500', col: 'col-span-2', hint: 'Path to customers' },
+        { id: 'customerSegments', label: 'Customer Segments', icon: Users, color: 'text-cyan-500', col: 'col-span-2 row-span-2', hint: 'Target customers' },
+        { id: 'costStructure', label: 'Cost Structure', icon: DollarSign, color: 'text-pink-500', col: 'col-span-5', hint: 'Acquisition, hosting, people' },
+        { id: 'revenueStreams', label: 'Revenue Streams', icon: DollarSign, color: 'text-green-500', col: 'col-span-5', hint: 'Revenue model, lifetime value' }
+    ]
 
     return (
-        <div className="space-y-6">
+        <div className="space-y-8">
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div className="space-y-1">
-                    <h2 className="text-xl font-black italic uppercase tracking-tighter">Lean <span className="text-accent">Canvas</span></h2>
+                    <h2 className="text-2xl font-black italic uppercase tracking-tighter">Lean <span className="text-accent">Canvas</span></h2>
+                    <p className="text-xs text-text-muted font-medium uppercase tracking-widest">Fast, Concise & Effective Business Modeling</p>
                 </div>
                 <div className="flex items-center gap-2">
                     <Input
-                        placeholder="Hypothesis Set (e.g. Early Adopter Profile)"
+                        placeholder="Iteration Name"
                         value={iterationName}
                         onChange={(e) => setIterationName(e.target.value)}
-                        className="h-8 text-[9px] uppercase tracking-widest font-bold min-w-[200px]"
+                        className="h-9 text-[10px] uppercase tracking-widest font-bold min-w-[250px]"
                     />
-                    <Button onClick={handleSave} disabled={saving} size="sm" className="h-8 font-black uppercase italic tracking-widest">
-                        {saving ? <Loader2 className="w-3 h-3 animate-spin" /> : <Save className="w-3 h-3 mr-2" />}
+                    <Button onClick={handleSave} disabled={saving} size="sm" className="h-9 font-black uppercase italic tracking-widest px-6">
+                        {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4 mr-2" />}
                         Save Canvas
                     </Button>
                 </div>
             </div>
 
-            <div className="grid grid-cols-10 border-2 border-text-muted/20 rounded-2xl overflow-hidden bg-bg-base shadow-xl min-h-[600px]">
-                {/* Column 1: Problem */}
-                <Block 
-                    id="problem" 
-                    label="Problem" 
-                    icon={AlertCircle} 
-                    placeholder="List the top 3 problems..." 
-                    hint="Existing alternatives? How are they solved today?"
-                    className="col-span-10 md:col-span-2 border-r"
-                />
-
-                {/* Column 2: Solution & Key Metrics */}
-                <div className="col-span-10 md:col-span-2 border-r flex flex-col">
-                    <Block 
-                        id="solution" 
-                        label="Solution" 
-                        icon={Lightbulb} 
-                        placeholder="Top 3 features?" 
-                        hint="Outline a possible solution for each problem."
-                        className="h-1/2 border-b"
-                    />
-                    <Block 
-                        id="keyMetrics" 
-                        label="Key Metrics" 
-                        icon={BarChart3} 
-                        placeholder="Key activities you measure..." 
-                        hint="The numbers that tell you how the business is doing."
-                        className="h-1/2"
-                    />
-                </div>
-
-                {/* Column 3: Unique Value Proposition */}
-                <Block 
-                    id="uniqueValueProposition" 
-                    label="Unique Value Proposition" 
-                    icon={Target} 
-                    placeholder="Single, clear, compelling message..." 
-                    hint="Why you are different and worth paying attention to."
-                    className="col-span-10 md:col-span-2 border-r bg-accent/5"
-                />
-
-                {/* Column 4: Unfair Advantage & Channels */}
-                <div className="col-span-10 md:col-span-2 border-r flex flex-col">
-                    <Block 
-                        id="unfairAdvantage" 
-                        label="Unfair Advantage" 
-                        icon={Zap} 
-                        placeholder="Something that cannot be easily copied..." 
-                        hint="Insider information, the right team, existing customers."
-                        className="h-1/2 border-b"
-                    />
-                    <Block 
-                        id="channels" 
-                        label="Channels" 
-                        icon={Share2} 
-                        placeholder="Path to customers..." 
-                        hint="How will you reach your customer segments?"
-                        className="h-1/2"
-                    />
-                </div>
-
-                {/* Column 5: Customer Segments */}
-                <Block 
-                    id="customerSegments" 
-                    label="Customer Segments" 
-                    icon={Users} 
-                    placeholder="Target customers and users..." 
-                    hint="Who are your early adopters?"
-                    className="col-span-10 md:col-span-2"
-                />
-
-                {/* Row 2: Cost Structure & Revenue Streams */}
-                <div className="col-span-10 border-t flex flex-col md:flex-row h-40">
-                    <Block 
-                        id="costStructure" 
-                        label="Cost Structure" 
-                        icon={CreditCard} 
-                        placeholder="Customer acquisition costs, distribution, etc." 
-                        hint="What are your fixed and variable costs?"
-                        className="flex-1 border-r"
-                    />
-                    <Block 
-                        id="revenueStreams" 
-                        label="Revenue Streams" 
-                        icon={DollarSign} 
-                        placeholder="Revenue model, lifetime value, etc." 
-                        hint="Where will the money come from?"
-                        className="flex-1"
-                    />
-                </div>
+            <div className="grid grid-cols-10 grid-rows-3 gap-2 border border-border rounded-[40px] overflow-hidden bg-bg-base shadow-2xl p-2 h-[800px]">
+                {sections.map((section) => (
+                    <div 
+                        key={section.id} 
+                        className={cn(
+                            "p-6 bg-white border border-border rounded-3xl flex flex-col group transition-all hover:border-accent/40 hover:shadow-lg",
+                            section.col
+                        )}
+                    >
+                        <div className="flex items-center gap-3 mb-4">
+                            <div className={cn("p-2 rounded-xl bg-bg-base border border-border", section.color)}>
+                                <section.icon size={18} />
+                            </div>
+                            <Label className="text-xs font-black uppercase tracking-widest">{section.label}</Label>
+                        </div>
+                        <Textarea
+                            placeholder={section.hint}
+                            value={(data as any)[section.id]}
+                            onChange={(e) => setData({ ...data, [section.id]: e.target.value })}
+                            className="flex-1 bg-transparent border-none resize-none text-xs font-medium leading-relaxed custom-scrollbar placeholder:opacity-30 focus-visible:ring-0 p-0"
+                        />
+                        <div className="mt-2 pt-2 border-t border-border/50 opacity-0 group-hover:opacity-100 transition-opacity">
+                             <p className="text-[9px] text-text-muted font-bold uppercase tracking-tighter">
+                                {section.hint}
+                             </p>
+                        </div>
+                    </div>
+                ))}
             </div>
         </div>
     )

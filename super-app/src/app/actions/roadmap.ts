@@ -2,15 +2,30 @@
 
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
 
 /**
  * Saves or updates strategic tool data.
  */
 export async function saveToolData(toolId: string, data: any, options?: any) {
   try {
-    const userId = options?.userId || "guest_user"; // In production, get from session
+    const session = await getServerSession(authOptions);
+    const userId = session?.user ? (session.user as any).id : "guest_user";
     
-    // Check if we are updating an existing iteration or creating a new one
+    // If submissionId is provided, update the existing record
+    if (options?.submissionId) {
+      const submission = await prisma.toolSubmission.update({
+        where: { id: options.submissionId },
+        data: {
+          data,
+          iteration: options?.iteration || 1,
+        },
+      });
+      revalidatePath("/stakeholders/tools");
+      return { success: true, submissionId: submission.id, message: "Strategic tool data updated." };
+    }
+
     const submission = await prisma.toolSubmission.create({
       data: {
         userId,
@@ -33,7 +48,8 @@ export async function saveToolData(toolId: string, data: any, options?: any) {
  */
 export async function saveAssessment(data: any, options?: any) {
   try {
-    const userId = options?.userId || "guest_user";
+    const session = await getServerSession(authOptions);
+    const userId = session?.user ? (session.user as any).id : "guest_user";
     
     const assessment = await prisma.assessment.create({
       data: {
@@ -54,12 +70,15 @@ export async function saveAssessment(data: any, options?: any) {
   }
 }
 
-export async function getToolData(toolId: string, userId?: string) {
+export async function getToolData(toolId: string, userIdParam?: string) {
   try {
+    const session = await getServerSession(authOptions);
+    const userId = userIdParam || (session?.user ? (session.user as any).id : "guest_user");
+    
     const data = await prisma.toolSubmission.findFirst({
       where: {
         toolId,
-        userId: userId || "guest_user",
+        userId: userId,
       },
       orderBy: {
         createdAt: "desc",
@@ -87,12 +106,15 @@ export async function getAllStakeholders() {
   }
 }
 
-export async function deleteToolData(toolId: string, userId?: string) {
+export async function deleteToolData(toolId: string, userIdParam?: string) {
   try {
+    const session = await getServerSession(authOptions);
+    const userId = userIdParam || (session?.user ? (session.user as any).id : "guest_user");
+
     await prisma.toolSubmission.deleteMany({
       where: {
         toolId,
-        userId: userId || "guest_user",
+        userId: userId,
       },
     });
     revalidatePath("/stakeholders/tools");

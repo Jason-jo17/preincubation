@@ -1,33 +1,30 @@
-import React from "react";
-import { Skeleton } from "@/components/ui/skeleton";
+import React from 'react'
+import { Activity, BarChart3 } from 'lucide-react'
 
-export default function StakeholdersLoading() {
+export default function StakeholderLoading() {
   return (
-    <div className="p-8 space-y-8 max-w-7xl mx-auto">
-      <div className="space-y-4">
-        <Skeleton className="h-4 w-32" />
-        <Skeleton className="h-10 w-64" />
-        <Skeleton className="h-4 w-full max-w-lg" />
+    <div className="flex flex-col items-center justify-center min-h-[60vh] space-y-6">
+      <div className="relative">
+        <div className="w-20 h-20 rounded-2xl bg-accent/5 border border-accent/20 flex items-center justify-center animate-pulse">
+           <BarChart3 className="text-accent animate-bounce" size={32} />
+        </div>
+        <div className="absolute -top-1 -right-1">
+           <Activity className="text-accent/50 animate-pulse" size={20} />
+        </div>
       </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {[1, 2, 3, 4, 5, 6].map((i) => (
-          <div key={i} className="bg-bg-surface border border-border p-8 rounded-3xl space-y-6">
-            <div className="flex justify-between">
-              <Skeleton className="h-12 w-12 rounded-2xl" />
-              <Skeleton className="h-6 w-16" />
-            </div>
-            <div className="space-y-2">
-              <Skeleton className="h-8 w-full" />
-              <Skeleton className="h-4 w-2/3" />
-            </div>
-            <div className="pt-4 border-t border-border flex justify-between items-center">
-              <Skeleton className="h-4 w-24" />
-              <Skeleton className="h-10 w-24 rounded-lg" />
-            </div>
-          </div>
-        ))}
+      <div className="text-center space-y-2">
+        <h3 className="text-lg font-black uppercase tracking-widest">Aggregating <span className="text-accent">Insights</span></h3>
+        <p className="text-[10px] text-text-muted font-bold uppercase tracking-[0.4em] animate-pulse">Building Portfolio Matrix...</p>
+      </div>
+      
+      <div className="w-full max-w-4xl space-y-4 mt-8 opacity-20">
+         <div className="h-12 bg-bg-surface border border-border rounded-xl animate-pulse" />
+         <div className="grid grid-cols-2 gap-4">
+            <div className="h-32 bg-bg-surface border border-border rounded-xl animate-pulse" />
+            <div className="h-32 bg-bg-surface border border-border rounded-xl animate-pulse" />
+         </div>
+         <div className="h-48 bg-bg-surface border border-border rounded-xl animate-pulse" />
       </div>
     </div>
-  );
+  )
 }

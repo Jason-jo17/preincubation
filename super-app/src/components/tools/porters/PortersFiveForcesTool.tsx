@@ -2,27 +2,38 @@
 
 import { useState } from "react"
 import { Label } from "@/components/ui/label"
-import { Textarea } from "@/components/ui/textarea"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import { Textarea } from "@/components/ui/textarea"
 import { saveToolData } from "@/app/actions/roadmap"
 import { toast } from "sonner"
-import { Save, Loader2, Sword, Truck, ShoppingCart, Repeat, DoorOpen } from "lucide-react"
+import { 
+  Save, Loader2, Sword, Users, RefreshCcw, 
+  ArrowRightLeft, UserPlus, Info 
+} from "lucide-react"
+import { 
+  Radar, RadarChart, PolarGrid, PolarAngleAxis, 
+  PolarRadiusAxis, ResponsiveContainer, Tooltip
+} from 'recharts'
+import { cn } from "@/lib/utils"
+import { motion } from "framer-motion"
 
-interface PortersFiveForcesToolProps {
+interface PortersToolProps {
     tool: any
     progress: any
     onDataSaved?: () => void
     submissionId?: string
 }
 
-export function PortersFiveForcesTool({ tool, progress, onDataSaved, submissionId }: PortersFiveForcesToolProps) {
+export function PortersFiveForcesTool({ tool, progress, onDataSaved, submissionId }: PortersToolProps) {
     const initialData = progress?.data || {
-        rivalry: "",
-        supplierPower: "",
-        buyerPower: "",
-        substitution: "",
-        newEntry: ""
+        forces: {
+            newEntrants: { score: 3, justification: "" },
+            buyers: { score: 3, justification: "" },
+            substitutes: { score: 3, justification: "" },
+            suppliers: { score: 3, justification: "" },
+            rivalry: { score: 3, justification: "" }
+        }
     }
 
     const [data, setData] = useState(initialData)
@@ -49,83 +60,123 @@ export function PortersFiveForcesTool({ tool, progress, onDataSaved, submissionI
         }
     }
 
+    const updateForce = (key: string, field: 'score' | 'justification', value: any) => {
+        setData((prev: any) => ({
+            ...prev,
+            forces: {
+                ...prev.forces,
+                [key]: { ...prev.forces[key], [field]: value }
+            }
+        }))
+    }
+
     const forces = [
-        { id: 'rivalry', label: 'Competitive Rivalry', icon: Sword, color: 'text-red-500', bg: 'bg-red-50/30', hint: 'Number and capability of competitors? Quality differences? Switching costs? Customer loyalty?' },
-        { id: 'supplierPower', label: 'Supplier Power', icon: Truck, color: 'text-blue-500', bg: 'bg-blue-50/30', hint: 'Number and size of suppliers? Uniqueness of service? Your ability to substitute?' },
-        { id: 'buyerPower', label: 'Buyer Power', icon: ShoppingCart, color: 'text-green-500', bg: 'bg-green-50/30', hint: 'Number of customers? Size of each order? Differences between competitors? Price sensitivity?' },
-        { id: 'substitution', label: 'Threat of Substitution', icon: Repeat, color: 'text-purple-500', bg: 'bg-purple-50/30', hint: 'Substitute performance? Cost of change? Potential for buyers to switch?' },
-        { id: 'newEntry', label: 'Threat of New Entry', icon: DoorOpen, color: 'text-orange-500', bg: 'bg-orange-50/30', hint: 'Time and cost of entry? Specialist knowledge? Economies of scale? Barriers to entry?' }
+        { id: 'newEntrants', label: 'New Entrants', icon: UserPlus, color: '#3b82f6', hint: 'Barriers to entry, economies of scale, brand loyalty.' },
+        { id: 'buyers', label: 'Buyer Power', icon: Users, color: '#10b981', hint: 'Number of customers, size of orders, price sensitivity.' },
+        { id: 'substitutes', label: 'Substitutes', icon: RefreshCcw, color: '#f59e0b', hint: 'Switching costs, relative price performance.' },
+        { id: 'suppliers', label: 'Supplier Power', icon: ArrowRightLeft, color: '#8b5cf6', hint: 'Uniqueness of service, cost of changing.' },
+        { id: 'rivalry', label: 'Industry Rivalry', icon: Sword, color: '#ef4444', hint: 'Number of competitors, industry growth rate.' }
     ]
+
+    const chartData = forces.map(f => ({
+        subject: f.label,
+        score: data.forces[f.id].score,
+        fullMark: 5
+    }))
 
     return (
         <div className="space-y-8">
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div className="space-y-1">
-                    <h2 className="text-2xl font-black italic uppercase tracking-tighter">Porter's <span className="text-accent">Five Forces</span></h2>
-                    <p className="text-xs text-text-muted font-medium uppercase tracking-widest">Industry Competitiveness Analysis</p>
+                    <h2 className="text-2xl font-black italic uppercase tracking-tighter">Porter&apos;s <span className="text-accent">Five Forces</span></h2>
+                    <p className="text-xs text-text-muted font-medium uppercase tracking-widest">Industry Competition Analysis</p>
                 </div>
                 <div className="flex items-center gap-2">
                     <Input
-                        placeholder="Industry Sector (e.g. Fintech SaaS)"
+                        placeholder="Iteration Name"
                         value={iterationName}
                         onChange={(e) => setIterationName(e.target.value)}
-                        className="h-9 text-[10px] uppercase tracking-widest font-bold min-w-[250px]"
+                        className="h-9 text-[10px] uppercase tracking-widest font-bold min-w-[200px]"
                     />
                     <Button onClick={handleSave} disabled={saving} size="sm" className="h-9 font-black uppercase italic tracking-widest px-6">
                         {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4 mr-2" />}
-                        Save Forces
+                        Save Analysis
                     </Button>
                 </div>
             </div>
 
-            <div className="relative h-[600px] flex items-center justify-center">
-                {/* Central Circle */}
-                <div className="absolute z-10 w-48 h-48 rounded-full bg-white border-4 border-accent flex items-center justify-center text-center p-4 shadow-2xl">
-                    <span className="text-sm font-black uppercase tracking-widest">Market Industry Rivalry</span>
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                {/* Visual Radar Panel */}
+                <div className="lg:col-span-5 bg-bg-surface border border-border rounded-[40px] p-8 flex flex-col items-center justify-center shadow-xl">
+                    <div className="w-full h-[350px]">
+                        <ResponsiveContainer width="100%" height="100%">
+                            <RadarChart cx="50%" cy="50%" outerRadius="80%" data={chartData}>
+                                <PolarGrid stroke="#333" />
+                                <PolarAngleAxis 
+                                    dataKey="subject" 
+                                    tick={{ fill: '#888', fontSize: 10, fontWeight: '900', textTransform: 'uppercase' }} 
+                                />
+                                <PolarRadiusAxis 
+                                    angle={30} 
+                                    domain={[0, 5]} 
+                                    tick={false}
+                                    axisLine={false}
+                                />
+                                <Radar
+                                    name="Intensity"
+                                    dataKey="score"
+                                    stroke="var(--color-accent, #3fd0c9)"
+                                    fill="var(--color-accent, #3fd0c9)"
+                                    fillOpacity={0.4}
+                                />
+                            </RadarChart>
+                        </ResponsiveContainer>
+                    </div>
+                    <div className="mt-8 text-center space-y-2">
+                        <div className="text-[10px] font-black uppercase tracking-[0.3em] text-text-muted">Total Competition Intensity</div>
+                        <div className="text-5xl font-black tracking-tighter text-text">
+                            {(Object.values(data.forces).reduce((acc: number, f: any) => acc + f.score, 0) / 5).toFixed(1)}
+                        </div>
+                    </div>
                 </div>
 
-                {/* Satellite Sections */}
-                {forces.map((force, idx) => {
-                    if (force.id === 'rivalry') return null;
-                    
-                    const positions = [
-                        "top-0 left-0",
-                        "top-0 right-0",
-                        "bottom-0 left-0",
-                        "bottom-0 right-0"
-                    ];
-                    
-                    return (
-                        <div key={force.id} className={`absolute w-[45%] h-[45%] ${positions[idx-1]} p-6 rounded-[3rem] border border-text-muted/10 ${force.bg} group`}>
-                            <div className="flex items-center gap-3 mb-3">
-                                <force.icon className={`w-5 h-5 ${force.color}`} />
-                                <Label className="text-xs font-black uppercase tracking-widest">{force.label}</Label>
+                {/* Controls Panel */}
+                <div className="lg:col-span-7 space-y-4 max-h-[600px] overflow-y-auto pr-2 custom-scrollbar">
+                    {forces.map((force) => (
+                        <motion.div 
+                            key={force.id}
+                            initial={{ opacity: 0, x: 20 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            className="bg-bg-surface border border-border p-6 rounded-3xl space-y-4 hover:border-accent/40 transition-all"
+                        >
+                            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                                <div className="flex items-center gap-3">
+                                    <div className="p-2 rounded-xl bg-bg-base border border-border text-accent">
+                                        <force.icon size={20} />
+                                    </div>
+                                    <div>
+                                        <h3 className="text-sm font-black uppercase tracking-widest">{force.label}</h3>
+                                        <p className="text-[10px] text-text-muted font-bold uppercase opacity-50">{force.hint}</p>
+                                    </div>
+                                </div>
+                                <div className="flex items-center gap-4">
+                                    <input 
+                                        type="range" min="1" max="5" step="1"
+                                        value={data.forces[force.id].score}
+                                        onChange={(e) => updateForce(force.id, 'score', parseInt(e.target.value))}
+                                        className="accent-accent w-32"
+                                    />
+                                    <span className="text-2xl font-black italic tracking-tighter w-8 text-center">{data.forces[force.id].score}</span>
+                                </div>
                             </div>
-                            <Textarea
-                                placeholder={`Analyze ${force.label.toLowerCase()}...`}
-                                value={(data as any)[force.id]}
-                                onChange={(e) => setData({ ...data, [force.id]: e.target.value })}
-                                className="h-[70%] bg-white/50 border-none resize-none text-xs font-medium custom-scrollbar"
+                            <Textarea 
+                                placeholder="Strategic justification..."
+                                value={data.forces[force.id].justification}
+                                onChange={(e) => updateForce(force.id, 'justification', e.target.value)}
+                                className="bg-bg-base/50 border-none resize-none text-xs font-medium min-h-[80px]"
                             />
-                            <p className="mt-2 text-[8px] text-text-muted font-bold uppercase opacity-50 group-hover:opacity-100 transition-opacity">
-                                {force.hint}
-                            </p>
-                        </div>
-                    )
-                })}
-
-                {/* Rivalry Box (Overlaying Central Circle or separate) */}
-                <div className="absolute z-20 w-[300px] mt-64 p-4 rounded-2xl bg-white border-2 border-red-200 shadow-xl">
-                     <div className="flex items-center gap-3 mb-2">
-                        <Sword className="w-4 h-4 text-red-500" />
-                        <Label className="text-[10px] font-black uppercase tracking-widest">Rivalry Intensity</Label>
-                    </div>
-                    <Textarea
-                        placeholder="Analyze internal rivalry..."
-                        value={data.rivalry}
-                        onChange={(e) => setData({ ...data, rivalry: e.target.value })}
-                        className="h-24 bg-red-50/50 border-none resize-none text-[11px] font-medium"
-                    />
+                        </motion.div>
+                    ))}
                 </div>
             </div>
         </div>

@@ -20,6 +20,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import Link from "next/link";
+import NeuralLink from "./NeuralLink";
 
 const STATS = [
   { label: "TRL Level", value: "Level 4", sub: "Alpha Prototype", color: "text-accent", icon: Rocket, progress: 44 },
@@ -176,6 +177,7 @@ export default function CoinovatorPage() {
            </Card>
         </div>
       </div>
+      <NeuralLink />
     </div>
   );
 }

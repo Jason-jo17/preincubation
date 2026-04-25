@@ -21,13 +21,16 @@ import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 
-const PROGRESS_STATS = [
-  { label: "TRL Level", value: "04", icon: Rocket, color: "text-orange-500", desc: "Technology Readiness" },
-  { label: "CRL Level", value: "03", icon: Activity, color: "text-emerald-500", desc: "Commercial Readiness" },
-  { label: "IRL Level", value: "02", icon: Layers, color: "text-blue-500", desc: "Investment Readiness" },
-];
+import { useAssessmentStore } from "@/lib/store/assessment";
 
 export default function StudentDashboard() {
+  const { getFrameworkLevel } = useAssessmentStore();
+  
+  const stats = [
+    { label: "TRL Level", value: `0${getFrameworkLevel('TRL')}`, icon: Rocket, color: "text-orange-500", desc: "Technology Readiness" },
+    { label: "CRL Level", value: `0${getFrameworkLevel('CRL')}`, icon: Activity, color: "text-emerald-500", desc: "Commercial Readiness" },
+    { label: "IRL Level", value: `0${getFrameworkLevel('IRL')}`, icon: Layers, color: "text-blue-500", desc: "Investment Readiness" },
+  ];
   return (
     <div className="p-8 lg:p-12 space-y-12 max-w-7xl mx-auto">
       {/* Header */}
@@ -59,7 +62,7 @@ export default function StudentDashboard() {
 
       {/* Progress Matrix */}
       <section className="grid grid-cols-1 md:grid-cols-3 gap-8">
-        {PROGRESS_STATS.map((stat, idx) => (
+        {stats.map((stat, idx) => (
           <motion.div
             key={stat.label}
             initial={{ opacity: 0, y: 20 }}

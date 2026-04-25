@@ -35,6 +35,8 @@ model User {
   reviews       Review[]       @relation("Candidate")
   assessments   Assessment[]
   toolSubmissions ToolSubmission[]
+  interactions  Interaction[]
+  mosiSessions  MosiSession[]
 }
 
 // ============ PROFILER ============
@@ -187,4 +189,64 @@ model ToolSubmission {
 
   @@index([userId])
   @@index([toolId])
+}
+
+// ============ VENTURE READINESS DIAGNOSTIC ============
+
+model ReadinessAssessment {
+  id           String   @id @default(cuid())
+  userId       String
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // Mapping of frameworkId -> levelIndex -> questionIndex -> score
+  scores       Json
+  
+  // Mapping of frameworkId -> currentLevel (1-9)
+  levels       Json
+  
+  // Aggregate score or stage
+  stage        String?  // e.g. "POC", "MVP"
+  
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([userId])
+}
+
+model Interaction {
+  id           String   @id @default(cuid())
+  userId       String
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  stakeholder  String
+  role         String?
+  type         String   // "Meeting", "Interview", "Audit", etc.
+  summary      String   @db.Text
+  sentiment    String?  // "Positive", "Neutral", "Negative"
+  insights     Int      @default(0)
+  
+  date         DateTime @default(now())
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([userId])
+}
+
+model MosiSession {
+  id              String   @id @default(cuid())
+  userId          String
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  stakeholderName String
+  company         String?
+  location        String   // "VIDEO CALL", "OFFICE NODE", etc.
+  status          String   @default("Scheduled") // "Scheduled", "Completed", "Cancelled"
+  
+  date            DateTime
+  time            String
+  
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([userId])
 }

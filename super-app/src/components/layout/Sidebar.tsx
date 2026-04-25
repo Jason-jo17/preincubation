@@ -131,14 +131,26 @@ const navItems: NavItem[] = [
   },
   { 
     name: "Cohort Manager", 
-    href: "/manager", 
+    href: "/mentor", 
     icon: Users,
-    roles: ["MANAGER", "MENTOR"],
+    roles: ["MENTOR", "ADMIN"],
     subItems: [
-      { name: "Mentor HQ", href: "/manager/dashboard" },
-      { name: "Mentees Portfolio", href: "/manager/mentees" },
-      { name: "Expert Review", href: "/manager/review" },
-      { name: "Sprint Builder", href: "/manager/builder" },
+      { name: "Portfolio Overview", href: "/mentor" },
+      { name: "Cohort Tracking", href: "/mentor/cohorts" },
+      { name: "Mentee Insights", href: "/mentor/mentees" },
+      { name: "Review Hub", href: "/mentor/review" },
+    ]
+  },
+  { 
+    name: "System Oracle", 
+    href: "/admin", 
+    icon: Shield,
+    roles: ["ADMIN"],
+    subItems: [
+      { name: "Command Center", href: "/admin" },
+      { name: "User Identities", href: "/admin/users" },
+      { name: "System Settings", href: "/admin/settings" },
+      { name: "Audit Logs", href: "/admin/logs" },
     ]
   },
 ];
@@ -304,7 +316,7 @@ export function Sidebar() {
         
         {!isCollapsed && (
           <div className="mt-4 flex flex-wrap gap-1 p-1 bg-bg-base rounded-lg">
-             {(["STUDENT", "MSME", "MANAGER", "ADMIN"] as UserRole[]).map((r) => (
+             {(["STUDENT", "MSME", "MENTOR", "ADMIN"] as UserRole[]).map((r) => (
                <button
                  key={r}
                  onClick={() => setRole(r)}
