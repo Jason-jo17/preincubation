@@ -1,100 +1,166 @@
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=Space+Mono:wght@400;700&family=Inter:wght@300;400;500;600&display=swap');
 @import "tailwindcss";
 
 @theme {
-  --font-sans: "Inter", "Outfit", system-ui, -apple-system, sans-serif;
-  --font-mono: "Fira Code", "IBM Plex Mono", monospace;
+  /* Unified Theme Tokens from Super App */
+  --font-display: "Syne", sans-serif;
+  --font-mono: "Space Mono", monospace;
+  --font-body: "Inter", sans-serif;
+
+  --color-accent: #786BF9;
+  --color-accent-foreground: #FFFFFF;
+  --color-accent-muted: rgba(120, 107, 249, 0.1);
   
-  --color-background: #f8fafc; /* slate-50 */
-  --color-foreground: #0f172a; /* slate-900 */
+  --color-danger: #DC143C;
+  --color-success: #1EC075;
+  --color-warning: #FECE0A;
+
+  /* Legacy Color Mapping for Innovault Compatibility */
+  --color-primary: #786BF9; /* Mapped to accent */
+  --color-secondary: #1EC075; /* Mapped to success */
   
-  --color-primary: #f59e0b; /* amber-500 */
-  --color-secondary: #059669; /* emerald-600 */
-  --color-accent: #2563eb; /* blue-600 */
-  
-  /* Additional Light Theme Tokens */
-  --color-surface-sunken: #f1f5f9; /* slate-100 */
+  --color-surface-sunken: #f1f5f9;
   --color-surface-raised: #ffffff;
-  --color-border-subtle: #e2e8f0; /* slate-200 */
-  --color-muted-foreground: #64748b; /* slate-500 */
+  --color-border-subtle: #e2e8f0;
+  --color-muted-foreground: #64748b;
+
+  --radius-xs: 4px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 24px;
 }
 
+:root {
+  --color-bg-base: #F1F2FB;
+  --color-bg-surface: #FFFFFF;
+  --color-bg-raised: #F8F9FE;
+  --color-bg-overlay: #EAEBF5;
+
+  --color-text-primary: #1C2A3B;
+  --color-text-secondary: #484095;
+  --color-text-muted: #8E959D;
+
+  --color-accent: #786BF9;
+  --color-accent-foreground: #FFFFFF;
+  --color-accent-muted: rgba(120, 107, 249, 0.1);
+
+  --color-border: #EAEBF5;
+  --color-border-focus: #786BF9;
+
+  --color-danger: #DC143C;
+  --color-success: #1EC075;
+  --color-warning: #FECE0A;
+
+  --background: var(--color-bg-base);
+  --foreground: var(--color-text-primary);
+  
+  --primary: var(--color-accent);
+  --primary-foreground: var(--color-accent-foreground);
+  
+  --muted: var(--color-bg-surface);
+  --muted-foreground: var(--color-text-muted);
+  
+  --accent: var(--color-bg-surface);
+  --accent-foreground: var(--color-text-primary);
+  
+  --border: var(--color-border);
+  --input: var(--color-border);
+  --ring: var(--color-border-focus);
+}
+
+.dark {
+  --color-bg-base: #06060A;
+  --color-bg-surface: #0E0E14;
+  --color-bg-raised: #14141F;
+  --color-bg-overlay: #1C1C2A;
+  
+  --color-text-primary: #F8F9FA;
+  --color-text-secondary: #94A3B8;
+  --color-text-muted: #475569;
+  
+  --color-accent: #786BF9;
+  --color-accent-foreground: #FFFFFF;
+  --color-accent-muted: rgba(120, 107, 249, 0.15);
+  
+  --color-border: #1E1E2E;
+  --color-border-focus: #786BF9;
+  
+  --color-danger: #FF4B4B;
+  --color-success: #22C55E;
+  --color-warning: #F59E0B;
+}
 
 /* Base Styles */
 @layer base {
+  * {
+    border-color: var(--color-border);
+  }
+  
   body {
-    @apply bg-background text-foreground antialiased selection:bg-primary/20 selection:text-black;
-    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    background-color: var(--color-bg-base);
+    color: var(--color-text-primary);
+    font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+
+  code, pre {
+    font-family: var(--font-mono);
   }
 }
 
 /* Custom Utilities */
 @layer utilities {
   .glass {
-    @apply bg-white/70 backdrop-blur-xl border border-slate-200 shadow-xl;
+    background: rgba(22, 22, 22, 0.7);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(46, 46, 46, 0.5);
   }
   
   .glass-card {
-    @apply bg-white/80 backdrop-blur-2xl border border-slate-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:border-slate-200 transition-all duration-500;
-  }
-
-
-  .glass-premium {
-    @apply bg-white/60 backdrop-blur-3xl border border-slate-200/50 shadow-[0_20px_50px_-12px_rgba(0,0,0,0.08)] relative overflow-hidden;
-    &::after {
-      content: "";
-      @apply absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.02] pointer-events-none mix-blend-overlay;
-    }
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--color-border);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.04);
+    transition: all 0.3s ease;
   }
 
   .text-gradient {
-    @apply bg-clip-text text-transparent bg-gradient-to-br from-slate-950 via-slate-800 to-slate-600;
+    background: linear-gradient(to bottom right, var(--color-text-primary), var(--color-text-secondary));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
   }
 
-  .text-amber-gradient {
-    @apply bg-clip-text text-transparent bg-gradient-to-br from-amber-600 via-amber-700 to-amber-900;
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
   }
 
-
-  .glow-amber {
-    box-shadow: 0 10px 40px -10px rgba(245, 158, 11, 0.2);
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
   }
 
-  .glow-emerald {
-    box-shadow: 0 10px 40px -10px rgba(16, 185, 129, 0.15);
-  }
-
-  .scrollbar-hide::-webkit-scrollbar {
-    display: none;
-  }
-  
-  /* Scrollbar Styling */
-  ::-webkit-scrollbar {
+  .custom-scrollbar::-webkit-scrollbar {
     width: 6px;
-    height: 6px;
   }
-  ::-webkit-scrollbar-track {
-    @apply bg-slate-100;
+
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
   }
-  ::-webkit-scrollbar-thumb {
-    @apply bg-slate-300 rounded-full hover:bg-slate-400 transition-colors;
+
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: var(--color-border);
+    border-radius: 10px;
   }
-}
 
-/* Animations */
-@keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
-}
-
-.animate-float {
-  animation: float 6s ease-in-out infinite;
-}
-
-@keyframes pulse-soft {
-  0%, 100% { opacity: 0.8; transform: scale(1); }
-  50% { opacity: 1; transform: scale(1.02); }
-}
-
-.animate-pulse-soft {
-  animation: pulse-soft 4s ease-in-out infinite;
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: var(--color-text-muted);
+  }
 }

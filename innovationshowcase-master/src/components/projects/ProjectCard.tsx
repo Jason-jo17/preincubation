@@ -30,7 +30,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
   return (
     <motion.div 
       whileHover={{ y: -12, scale: 1.02 }}
-      className="bg-white flex flex-col rounded-[2.5rem] border-2 border-slate-100 overflow-hidden group/card h-full shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_50px_rgb(0,0,0,0.08)] transition-all duration-500"
+      className="bg-bg-surface flex flex-col rounded-[2.5rem] border-2 border-border/50 overflow-hidden group/card h-full shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_50px_rgb(0,0,0,0.08)] transition-all duration-500"
     >
 
       {/* Thumbnail Area */}
@@ -40,27 +40,27 @@ export function ProjectCard({ project }: ProjectCardProps) {
           alt={project.title}
           className="w-full h-full object-cover transition-transform duration-700 group-hover/card:scale-110" 
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-white/90 via-white/10 to-transparent opacity-60" />
+        <div className="absolute inset-0 bg-gradient-to-t from-bg-surface/90 via-bg-surface/10 to-transparent opacity-60" />
         
         {/* Chips */}
         <div className="absolute top-5 left-5 flex gap-2.5">
             <div className={`px-3 py-1.5 rounded-xl text-[10px] font-black tracking-widest uppercase backdrop-blur-md border ${
-              project.ceedCategory === 'DISRUPTION' ? 'bg-red-50 border-red-100 text-red-600' : 
-              project.ceedCategory === 'EFFICIENCY' ? 'bg-amber-50 border-amber-100 text-amber-600' :
-              project.ceedCategory === 'EXPANSION' ? 'bg-emerald-50 border-emerald-100 text-emerald-600' :
-              'bg-blue-50 border-blue-100 text-blue-600'
+              project.ceedCategory === 'DISRUPTION' ? 'bg-danger/10 border-danger/20 text-danger' : 
+              project.ceedCategory === 'EFFICIENCY' ? 'bg-accent/10 border-accent/20 text-accent' :
+              project.ceedCategory === 'EXPANSION' ? 'bg-success/10 border-success/20 text-success' :
+              'bg-accent/10 border-accent/20 text-accent'
             }`}>
               {project.ceedCategory}
             </div>
-            <div className="px-3 py-1.5 rounded-xl text-[10px] bg-slate-900 text-white font-black tracking-widest uppercase shadow-xl">
+            <div className="px-3 py-1.5 rounded-xl text-[10px] bg-text-primary text-bg-surface font-black tracking-widest uppercase shadow-xl">
                {project.projectType.replace('_', ' ')}
             </div>
         </div>
 
         {/* Score Badge */}
-        <div className="absolute bottom-5 right-5 w-14 h-14 rounded-2xl bg-white text-slate-900 flex flex-col items-center justify-center shadow-2xl border border-slate-50">
-           <span className="text-lg font-black leading-none text-amber-600">{project.ceedScore}</span>
-           <span className="text-[7px] font-black uppercase tracking-[0.2em] mt-1 text-slate-400">CEED</span>
+        <div className="absolute bottom-5 right-5 w-14 h-14 rounded-2xl bg-bg-surface text-text-primary flex flex-col items-center justify-center shadow-2xl border border-border/30">
+           <span className="text-lg font-black leading-none text-accent">{project.ceedScore}</span>
+           <span className="text-[7px] font-black uppercase tracking-[0.2em] mt-1 text-text-muted">CEED</span>
         </div>
       </div>
 
@@ -69,43 +69,43 @@ export function ProjectCard({ project }: ProjectCardProps) {
         <div className="mb-6">
            {primarySector && (
              <div className="flex items-center gap-2.5 mb-3">
-                <span className="text-base bg-slate-50 w-8 h-8 rounded-lg flex items-center justify-center shadow-inner">{primarySector.icon}</span>
-                <span className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">{primarySector.name}</span>
+                <span className="text-base bg-bg-raised w-8 h-8 rounded-lg flex items-center justify-center shadow-inner">{primarySector.icon}</span>
+                <span className="text-[10px] font-black text-text-muted uppercase tracking-[0.2em]">{primarySector.name}</span>
              </div>
            )}
-           <h3 className="text-xl font-black text-slate-900 leading-tight group-hover/card:text-amber-600 transition-colors">
+           <h3 className="text-xl font-black text-text-primary leading-tight group-hover/card:text-accent transition-colors">
              {project.title}
            </h3>
-           <p className="text-slate-500 text-sm mt-3 line-clamp-2 leading-relaxed font-bold">
+           <p className="text-text-secondary text-sm mt-3 line-clamp-2 leading-relaxed font-bold">
              {project.shortDescription}
            </p>
         </div>
 
         {/* Info Grid */}
-        <div className="grid grid-cols-3 gap-4 border-y-2 border-slate-50 py-6 mb-6">
+        <div className="grid grid-cols-3 gap-4 border-y-2 border-border/30 py-6 mb-6">
            <div className="text-center">
-              <div className="text-sm font-black text-slate-900">{project.deployments}</div>
-              <div className="text-[9px] font-black text-slate-400 uppercase tracking-widest mt-1">Builds</div>
+              <div className="text-sm font-black text-text-primary">{project.deployments}</div>
+              <div className="text-[9px] font-black text-text-muted uppercase tracking-widest mt-1">Builds</div>
            </div>
-           <div className="text-center border-x-2 border-slate-50">
-              <div className="text-sm font-black text-slate-900">{project.activeUsers}</div>
-              <div className="text-[9px] font-black text-slate-400 uppercase tracking-widest mt-1">Users</div>
+           <div className="text-center border-x-2 border-border/30">
+              <div className="text-sm font-black text-text-primary">{project.activeUsers}</div>
+              <div className="text-[9px] font-black text-text-muted uppercase tracking-widest mt-1">Users</div>
            </div>
            <div className="text-center">
-              <div className="text-sm font-black text-slate-900">{project.views}</div>
-              <div className="text-[9px] font-black text-slate-400 uppercase tracking-widest mt-1">Views</div>
+              <div className="text-sm font-black text-text-primary">{project.views}</div>
+              <div className="text-[9px] font-black text-text-muted uppercase tracking-widest mt-1">Views</div>
            </div>
         </div>
 
         {/* Footer */}
         <div className="flex items-center justify-between mt-auto pt-2">
            <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-xl bg-slate-100 border-2 border-white flex items-center justify-center font-black text-xs text-slate-600 overflow-hidden shadow-sm">
+              <div className="w-8 h-8 rounded-xl bg-bg-raised border-2 border-bg-surface flex items-center justify-center font-black text-xs text-text-secondary overflow-hidden shadow-sm">
                 {project.creator.avatar ? <img src={project.creator.avatar} /> : project.creator.name[0]}
               </div>
-              <span className="text-[11px] font-black text-slate-900 uppercase tracking-tight">{project.creator.name}</span>
+              <span className="text-[11px] font-black text-text-primary uppercase tracking-tight">{project.creator.name}</span>
            </div>
-           <button type="button" className="text-[10px] font-black text-amber-600 uppercase tracking-[0.2em] flex items-center gap-2 hover:gap-3 transition-all p-2 bg-amber-50 rounded-xl">
+           <button type="button" className="text-[10px] font-black text-accent uppercase tracking-[0.2em] flex items-center gap-2 hover:gap-3 transition-all p-2 bg-accent/5 rounded-xl">
              EXPLORE <span>→</span>
            </button>
         </div>
