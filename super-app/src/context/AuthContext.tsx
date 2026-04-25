@@ -23,7 +23,7 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
 
 function AuthProviderInner({ children }: { children: React.ReactNode }) {
-  const { data: session, status } = useSession()
+  const { data: session, status, update } = useSession()
   const [localUser, setLocalUser] = useState<User | null>(null)
   const [isLoading, setIsLoading] = useState(true)
 
@@ -35,10 +35,10 @@ function AuthProviderInner({ children }: { children: React.ReactNode }) {
 
     if (session?.user) {
       setLocalUser({
-        id: session.user.id,
+        id: (session.user as any).id || "1",
         name: session.user.name || "User",
         email: session.user.email || "",
-        role: (session.user.role as UserRole) || "STUDENT"
+        role: (session.user as any).role as UserRole || "STUDENT"
       })
     } else {
       // Fallback for development/guest
@@ -54,16 +54,26 @@ function AuthProviderInner({ children }: { children: React.ReactNode }) {
   }, [session, status])
 
   const login = async (role: UserRole) => {
-    // In dev mode without real auth, we just set local storage
-    // If using credentials, we would call signIn("credentials", { username: role.toLowerCase() })
-    localStorage.setItem("superapp_role", role)
-    // Force a reload or local state update to simulate login
-    setLocalUser({
-      id: "local",
-      name: "Local User",
-      email: "local@example.com",
-      role
+    // In dev mode, we try to sign in with credentials matching the role
+    const username = role.toLowerCase()
+    const result = await signIn("credentials", { 
+      username, 
+      password: "any", // authorize in lib/auth.ts doesn't check password
+      redirect: false 
     })
+    
+    if (result?.ok) {
+      localStorage.setItem("superapp_role", role)
+    } else {
+      // Fallback if signIn fails
+      localStorage.setItem("superapp_role", role)
+      setLocalUser({
+        id: "local",
+        name: "Local User",
+        email: "local@example.com",
+        role
+      })
+    }
   }
 
   const logout = async () => {
@@ -72,15 +82,19 @@ function AuthProviderInner({ children }: { children: React.ReactNode }) {
     setLocalUser(null)
   }
 
-  const setRole = (role: UserRole) => {
+  const setRole = async (role: UserRole) => {
     if (localUser) {
       setLocalUser({ ...localUser, role })
       localStorage.setItem("superapp_role", role)
+      // Sync with NextAuth session
+      if (session) {
+        await update({ role })
+      }
     }
   }
 
   return (
-    <AuthContext.Provider value={{ user: localUser, isLoading, login, logout, setRole }}>
+    <AuthContext.Provider value={{ user: localUser, isLoading, login, logout, setRole: (role) => { setRole(role) } }}>
       {children}
     </AuthContext.Provider>
   )

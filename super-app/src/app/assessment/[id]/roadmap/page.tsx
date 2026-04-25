@@ -2,7 +2,7 @@ import React from "react";
 import { getReadinessAssessment } from "@/app/actions/assessment";
 import { RoadmapRadar } from "@/components/assessment/RoadmapRadar";
 import { AssessmentHydrator } from "@/components/assessment/AssessmentHydrator";
-import { FRAMEWORKS, DETAILS } from "@/data/venture-readiness-data";
+import { FRAMEWORKS, DETAILS, TOOL_LINKS } from "@/data/venture-readiness-data";
 import { 
   Compass, 
   ArrowRight, 
@@ -169,21 +169,39 @@ export default async function RoadmapPage({ params }: PageProps) {
                         <div className="flex flex-wrap gap-2 pt-2">
                           {move.tools.map((tool: string, i: number) => {
                             const link = getToolLink(tool);
+                            const externalLink = TOOL_LINKS[tool];
+
                             const ToolContent = (
                               <div 
                                 key={i}
                                 className="px-3 py-1.5 rounded-lg bg-bg-base border border-border text-[10px] font-black uppercase tracking-wider flex items-center gap-2 hover:border-accent transition-colors cursor-pointer"
                               >
                                 {tool}
-                                <ExternalLink className="w-3 h-3 text-text-muted" />
+                                {link ? (
+                                  <ArrowRight className="w-3 h-3 text-accent" />
+                                ) : externalLink ? (
+                                  <ExternalLink className="w-3 h-3 text-text-muted" />
+                                ) : null}
                               </div>
                             );
 
-                            return link ? (
-                              <Link key={i} href={link}>
-                                {ToolContent}
-                              </Link>
-                            ) : ToolContent;
+                            if (link) {
+                              return (
+                                <Link key={i} href={link}>
+                                  {ToolContent}
+                                </Link>
+                              );
+                            }
+
+                            if (externalLink) {
+                              return (
+                                <a key={i} href={externalLink} target="_blank" rel="noopener noreferrer">
+                                  {ToolContent}
+                                </a>
+                              );
+                            }
+
+                            return ToolContent;
                           })}
                         </div>
                       )}

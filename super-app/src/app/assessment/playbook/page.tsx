@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { STAGES, FRAMEWORKS, STAGE_MAP, DETAILS } from "@/data/venture-readiness-data"
+import { STAGES, FRAMEWORKS, STAGE_MAP, DETAILS, TOOL_LINKS } from "@/data/venture-readiness-data"
 import { cn } from "@/lib/utils"
 import { motion, AnimatePresence } from "framer-motion"
 import { 
@@ -172,17 +172,32 @@ export default function PlaybookPage() {
                                                 <div className="flex flex-wrap gap-1.5">
                                                     {lvl.tools.map((tool: string) => {
                                                         const link = getToolLink(tool);
+                                                        const externalLink = TOOL_LINKS[tool];
+                                                        
                                                         const BadgeContent = (
                                                             <Badge key={tool} variant="secondary" className="bg-bg-surface hover:bg-accent hover:text-bg-base transition-colors cursor-pointer text-[9px] font-bold py-1 px-2 border-none">
                                                                 {tool}
+                                                                {!link && externalLink && <ExternalLink size={10} className="ml-1 opacity-50" />}
                                                             </Badge>
                                                         );
                                                         
-                                                        return link ? (
-                                                            <Link key={tool} href={link}>
-                                                                {BadgeContent}
-                                                            </Link>
-                                                        ) : BadgeContent;
+                                                        if (link) {
+                                                            return (
+                                                                <Link key={tool} href={link}>
+                                                                    {BadgeContent}
+                                                                </Link>
+                                                            );
+                                                        }
+                                                        
+                                                        if (externalLink) {
+                                                            return (
+                                                                <a key={tool} href={externalLink} target="_blank" rel="noopener noreferrer">
+                                                                    {BadgeContent}
+                                                                </a>
+                                                            );
+                                                        }
+
+                                                        return BadgeContent;
                                                     })}
                                                 </div>
                                             </div>

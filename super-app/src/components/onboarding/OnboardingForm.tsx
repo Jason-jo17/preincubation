@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
   User, 
@@ -19,16 +19,17 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
-import { useSession } from "next-auth/react";
+import { useSession, signIn } from "next-auth/react";
 import { ProfilerStep } from "./ProfilerStep";
 import { TeamProfile } from "@/types/profiler.types";
 
-type Role = "STUDENT" | "STAKEHOLDER" | "ADMIN";
+type Role = "STUDENT" | "STAKEHOLDER" | "ADMIN" | "MENTOR" | "MSME";
 
 export function OnboardingForm() {
   const router = useRouter();
   const { update } = useSession();
   const [step, setStep] = useState(1);
+  const [callbackUrl, setCallbackUrl] = useState("/");
   const [formData, setFormData] = useState({
     role: "" as Role | "",
     name: "",
@@ -38,7 +39,20 @@ export function OnboardingForm() {
     profilerData: null as TeamProfile | null,
   });
 
-  const nextStep = () => setStep(s => s + 1);
+  useEffect(() => {
+    // Capture callbackUrl on mount
+    const params = new URLSearchParams(window.location.search);
+    const url = params.get("callbackUrl");
+    if (url) {
+      setCallbackUrl(url);
+      console.log("Captured callbackUrl:", url);
+    }
+  }, []);
+
+  const nextStep = (e?: React.MouseEvent) => {
+    if (e) e.preventDefault();
+    setStep(s => s + 1);
+  };
   const prevStep = () => setStep(s => s - 1);
 
   const selectRole = (role: Role) => {
@@ -70,19 +84,41 @@ export function OnboardingForm() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
       });
+      
       if (!res.ok) {
         console.error("Failed to save onboarding data");
-      } else {
-        // Update the local session so middleware sees the new role
-        await update({ role: formData.role });
       }
+      
+      // Update the local session so middleware sees the new role
+      // We try both signIn (to create session) and update (to update existing)
+      const username = formData.role.toLowerCase();
+      await signIn("credentials", { 
+        username, 
+        password: "any", 
+        redirect: false 
+      });
+      
+      await update({ role: formData.role });
+      
     } catch (err) {
       console.error("Error saving onboarding data", err);
     }
     
+    // Use the preserved callbackUrl
+    const finalUrl = callbackUrl || "/";
+    console.log("Finalizing onboarding, redirecting to:", finalUrl);
+    
     setTimeout(() => {
-      router.push("/");
-    }, 3000);
+      router.push(finalUrl);
+      // Fallback redirect
+      if (typeof window !== "undefined") {
+        setTimeout(() => {
+          if (window.location.pathname === "/onboarding") {
+            window.location.href = finalUrl;
+          }
+        }, 1000);
+      }
+    }, 2000);
   };
 
   return (
@@ -117,11 +153,18 @@ export function OnboardingForm() {
                   color: "border-accent/20 hover:border-accent"
                 },
                 { 
-                  id: "STAKEHOLDER" as Role, 
+                  id: "MSME" as Role, 
                   title: "Industry / MSME", 
                   desc: "Mapping gaps, finding talent, and scaling solutions.", 
                   icon: Building2,
                   color: "border-success/20 hover:border-success"
+                },
+                { 
+                  id: "MENTOR" as Role, 
+                  title: "Expert Mentor", 
+                  desc: "Guiding innovators and reviewing venture progress.", 
+                  icon: User,
+                  color: "border-indigo-500/20 hover:border-indigo-500"
                 },
                 { 
                   id: "ADMIN" as Role, 
@@ -171,13 +214,16 @@ export function OnboardingForm() {
               <p className="text-text-secondary">Let's start with the fundamentals.</p>
             </div>
 
-            <form className="space-y-6">
+            <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
               <div className="space-y-2">
                 <Label htmlFor="name" className="text-xs font-bold uppercase tracking-widest text-text-muted">Full Name</Label>
                 <Input 
                   id="name" 
                   value={formData.name}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                  onChange={(e) => {
+                    console.log("Name updated:", e.target.value);
+                    setFormData({ ...formData, name: e.target.value });
+                  }}
                   placeholder="Enter your name"
                   className="h-14 bg-bg-surface border-border rounded-xl text-lg focus:ring-accent"
                 />
@@ -188,13 +234,17 @@ export function OnboardingForm() {
                   id="email" 
                   type="email"
                   value={formData.email}
-                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                  onChange={(e) => {
+                    console.log("Email updated:", e.target.value);
+                    setFormData({ ...formData, email: e.target.value });
+                  }}
                   placeholder="name@example.com"
                   className="h-14 bg-bg-surface border-border rounded-xl text-lg focus:ring-accent"
                 />
               </div>
               <Button 
-                onClick={nextStep} 
+                type="button"
+                onClick={() => nextStep()} 
                 disabled={!formData.name || !formData.email}
                 className="w-full h-14 text-lg font-bold rounded-xl gap-2 shadow-xl shadow-accent/20"
               >

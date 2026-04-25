@@ -14,7 +14,7 @@ export default function ToolPage() {
   // Mock tool object for the runner
   const mockTool = {
     toolId: toolId,
-    name: toolId.replace(/_/g, " ").toUpperCase(),
+    toolName: toolId.replace(/_/g, " ").toUpperCase(),
     description: "Execute and track innovation frameworks."
   };
 

@@ -1,5 +1,6 @@
 import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
+import { env } from "@/lib/env";
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -13,10 +14,14 @@ export const authOptions: NextAuthOptions = {
         // Mock authorization for now
         if (credentials?.username === "admin") {
           return { id: "1", name: "Admin User", email: "admin@example.com", role: "ADMIN" };
+        } else if (credentials?.username === "mentor") {
+          return { id: "5", name: "Mentor User", email: "mentor@example.com", role: "MENTOR" };
         } else if (credentials?.username === "manager") {
           return { id: "2", name: "Manager User", email: "manager@example.com", role: "MANAGER" };
         } else if (credentials?.username === "student") {
           return { id: "3", name: "Student User", email: "student@example.com", role: "STUDENT" };
+        } else if (credentials?.username === "msme") {
+          return { id: "6", name: "MSME Partner", email: "msme@example.com", role: "MSME" };
         } else if (credentials?.username === "stakeholder") {
           return { id: "4", name: "Stakeholder User", email: "stakeholder@example.com", role: "STAKEHOLDER" };
         }
@@ -43,7 +48,7 @@ export const authOptions: NextAuthOptions = {
       return session;
     }
   },
-  secret: process.env.NEXTAUTH_SECRET || "super-secret-local-key-for-dev",
+  secret: env.NEXTAUTH_SECRET,
   session: {
     strategy: "jwt",
   },

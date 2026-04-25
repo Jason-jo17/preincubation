@@ -93,7 +93,7 @@ export const TOOL_ID_MAP: Record<string, string> = {
 export function getToolLink(toolName: string): string | null {
   const toolId = TOOL_ID_MAP[toolName];
   if (toolId) {
-    return `/innovator/tools?tool=${toolId}`;
+    return `/ecosystem/tools/${toolId}`;
   }
   return null;
 }
