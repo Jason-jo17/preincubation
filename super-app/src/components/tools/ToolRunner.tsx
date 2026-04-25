@@ -20,6 +20,14 @@ import { UserTestingHub } from './user-testing'
 import PitchDeckBuilder from './pitch-deck/PitchDeckBuilder'
 import { ProblemStakeholderMatrixTool } from "./mapping/ProblemStakeholderMatrixTool"
 import { PerceivedValueTool } from "./perceived-value/PerceivedValueTool"
+import { ReadinessDiagnostic } from "./ReadinessDiagnostic"
+import { DiagnosticScorecard } from "../diagnostic/DiagnosticScorecard"
+import { PESTLETool } from "./pestle/PESTLETool"
+import { SWOTTool } from "./swot/SWOTTool"
+import { BMCTool } from "./bmc/BMCTool"
+import { LeanCanvasTool } from "./lean-canvas/LeanCanvasTool"
+import { PortersFiveForcesTool } from "./porters/PortersFiveForcesTool"
+import { TheoryOfChangeTool } from "./theory-of-change/TheoryOfChangeTool"
 
 import { GenericToolForm } from "./GenericToolForm"
 
@@ -130,6 +138,38 @@ export function ToolRunner({ tool, progress, onDataSaved, isNewIteration, submis
 
         case 'perceived_value':
             return <PerceivedValueTool tool={tool} progress={progress} onDataSaved={onDataSaved} />
+
+        case 'readiness_diagnostic':
+        case 'diagnostic':
+        case 'venture_readiness':
+            if (progress?.submittedData || progress?.data) {
+                return <DiagnosticScorecard data={progress?.submittedData || progress?.data} />
+            }
+            return <ReadinessDiagnostic tool={tool} progress={progress} onDataSaved={onDataSaved} />
+
+        case 'pestle':
+        case 'pestle_analysis':
+            return <PESTLETool tool={tool} progress={progress} onDataSaved={onDataSaved} submissionId={submissionId} />
+
+        case 'swot':
+        case 'swot_analysis':
+        case 'swot_matrix':
+            return <SWOTTool tool={tool} progress={progress} onDataSaved={onDataSaved} submissionId={submissionId} />
+
+        case 'bmc':
+        case 'business_model_canvas':
+            return <BMCTool tool={tool} progress={progress} onDataSaved={onDataSaved} submissionId={submissionId} />
+
+        case 'lean_canvas':
+            return <LeanCanvasTool tool={tool} progress={progress} onDataSaved={onDataSaved} submissionId={submissionId} />
+
+        case 'porters_five_forces':
+        case 'porters':
+            return <PortersFiveForcesTool tool={tool} progress={progress} onDataSaved={onDataSaved} submissionId={submissionId} />
+
+        case 'theory_of_change':
+        case 'toc':
+            return <TheoryOfChangeTool tool={tool} progress={progress} onDataSaved={onDataSaved} submissionId={submissionId} />
 
         default:
             return <GenericToolForm tool={tool} progress={progress} onDataSaved={onDataSaved} />

@@ -10,7 +10,13 @@ import {
   Activity,
   Layers,
   MessageSquare,
-  Bot
+  Bot,
+  Globe,
+  ZapIcon,
+  Layout,
+  Rocket,
+  Shield,
+  Milestone
 } from "lucide-react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
@@ -64,6 +70,62 @@ const TOOLS = [
     status: "Beta",
     impact: "Very High",
     href: "/stakeholders/tools/innovation"
+  },
+  {
+    title: "Venture Readiness Diagnostic",
+    description: "Multi-framework diagnostic engine to assess startup maturity across P1-P9 pillars.",
+    icon: ShieldCheck,
+    status: "Priority",
+    impact: "Strategic",
+    href: "/stakeholders/tools/venture_readiness"
+  },
+  {
+    title: "PESTLE Analysis",
+    description: "Map macro-environmental factors: Political, Economic, Social, Technological, Legal, Environmental.",
+    icon: Globe,
+    status: "Active",
+    impact: "Strategic",
+    href: "/stakeholders/tools/pestle"
+  },
+  {
+    title: "SWOT Matrix",
+    description: "Evaluate Strengths, Weaknesses, Opportunities, and Threats to define strategic direction.",
+    icon: Zap,
+    status: "Active",
+    impact: "High",
+    href: "/stakeholders/tools/swot"
+  },
+  {
+    title: "Business Model Canvas",
+    description: "The classic 9-block framework to visualize, design and reinvent your business model.",
+    icon: Layout,
+    status: "Active",
+    impact: "Very High",
+    href: "/stakeholders/tools/bmc"
+  },
+  {
+    title: "Lean Canvas",
+    description: "A fast, concise, and portable version of the business model canvas for early startups.",
+    icon: Rocket,
+    status: "Active",
+    impact: "Very High",
+    href: "/stakeholders/tools/lean_canvas"
+  },
+  {
+    title: "Porter's Five Forces",
+    description: "Analyze the competitive environment and industry structure for long-term profitability.",
+    icon: Shield,
+    status: "Active",
+    impact: "Strategic",
+    href: "/stakeholders/tools/porters"
+  },
+  {
+    title: "Theory of Change",
+    description: "Map the logical sequence of inputs, activities, outputs, and outcomes to achieve long-term impact.",
+    icon: Milestone,
+    status: "Active",
+    impact: "Impact",
+    href: "/stakeholders/tools/theory_of_change"
   }
 ];
 

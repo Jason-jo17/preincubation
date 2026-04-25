@@ -33,6 +33,8 @@ model User {
   projects      Project[]      @relation("UserProjects")
   reviewsGiven  Review[]       @relation("Reviewer")
   reviews       Review[]       @relation("Candidate")
+  assessments   Assessment[]
+  toolSubmissions ToolSubmission[]
 }
 
 // ============ PROFILER ============
@@ -145,4 +147,44 @@ enum ReviewStatus {
   PENDING
   REVIEWING
   COMPLETED
+}
+
+// ============ ASSESSMENT & TOOLS ============
+
+model Assessment {
+  id           String   @id @default(cuid())
+  userId       String
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  type         String   // "readiness"
+  toolId       String   // "venture_readiness"
+  
+  // Scoring Data
+  overallScore Float
+  pillarScores Json     // Detailed scores for P1-P9
+  
+  // Qualitative Data
+  data         Json     // Full assessment response
+  
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([userId])
+}
+
+model ToolSubmission {
+  id           String   @id @default(cuid())
+  userId       String
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  toolId       String   // "swot", "pestle", etc.
+  iteration    Int      @default(1)
+  
+  data         Json     // Tool-specific output
+  
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([userId])
+  @@index([toolId])
 }
