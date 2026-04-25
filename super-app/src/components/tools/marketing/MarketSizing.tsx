@@ -166,7 +166,25 @@ export default function MarketSizing({ toolId, projectId }: { toolId: string; pr
   );
 }
 
-function MarketLevelInput({ label, subtitle, icon, value, description, onChangeValue, onChangeDesc }: any) {
+interface MarketLevelInputProps {
+  label: string;
+  subtitle: string;
+  icon: React.ReactNode;
+  value: number;
+  description: string;
+  onChangeValue: (val: string) => void;
+  onChangeDesc: (val: string) => void;
+}
+
+function MarketLevelInput({ 
+  label, 
+  subtitle, 
+  icon, 
+  value, 
+  description, 
+  onChangeValue, 
+  onChangeDesc 
+}: MarketLevelInputProps) {
   return (
     <Card className="bg-bg-surface border-border/50 overflow-hidden group">
       <div className="p-6 space-y-4">
@@ -208,7 +226,13 @@ function MarketLevelInput({ label, subtitle, icon, value, description, onChangeV
   );
 }
 
-function StatCard({ label, value, color }: any) {
+interface StatCardProps {
+  label: string;
+  value: string;
+  color: string;
+}
+
+function StatCard({ label, value, color }: StatCardProps) {
   return (
     <div className="bg-bg-base p-4 rounded-2xl border border-border/30 text-center space-y-1">
       <p className="text-[10px] font-black uppercase tracking-widest text-text-muted">{label}</p>

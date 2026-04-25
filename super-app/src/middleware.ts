@@ -19,6 +19,10 @@ export default withAuth(
       return NextResponse.redirect(new URL("/onboarding", req.url));
     }
 
+    if (path.startsWith("/mentor") && (!token || (token.role !== "MENTOR" && token.role !== "ADMIN"))) {
+      return NextResponse.redirect(new URL("/onboarding", req.url));
+    }
+
     if (path.startsWith("/oracle") && (!token || token.role !== "ADMIN")) {
       return NextResponse.redirect(new URL("/onboarding", req.url));
     }
@@ -53,6 +57,9 @@ export const config = {
     "/innovator/:path*",
     "/manager/:path*",
     "/oracle/:path*",
-    "/assessment/:path*"
+    "/assessment/:path*",
+    "/mentor/:path*",
+    "/mosi/:path*",
+    "/showcase/:path*"
   ],
 };

@@ -147,6 +147,18 @@ const navItems: NavItem[] = [
     ]
   },
   { 
+    name: "Mentor Hub",
+    href: "/mentor",
+    icon: UserCircle,
+    roles: ["MENTOR"],
+    subItems: [
+      { name: "Dashboard", href: "/mentor" },
+      { name: "Mentee Portfolio", href: "/mentor/mentees" },
+      { name: "Review Hub", href: "/mentor/review" },
+      { name: "My Cohorts", href: "/mentor/cohorts" },
+    ]
+  },
+  { 
     name: "Cohort Manager", 
     href: "/manager", 
     icon: Users,

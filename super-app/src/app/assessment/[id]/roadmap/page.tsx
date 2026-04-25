@@ -15,6 +15,7 @@ import {
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { cn } from "@/lib/utils";
+import { getToolLink } from "@/lib/tool-utils";
 
 interface PageProps {
   params: Promise<{ id: string }>;
@@ -166,15 +167,24 @@ export default async function RoadmapPage({ params }: PageProps) {
 
                       {move.tools.length > 0 && (
                         <div className="flex flex-wrap gap-2 pt-2">
-                          {move.tools.map((tool: string, i: number) => (
-                            <div 
-                              key={i}
-                              className="px-3 py-1.5 rounded-lg bg-bg-base border border-border text-[10px] font-black uppercase tracking-wider flex items-center gap-2 hover:border-accent transition-colors cursor-pointer"
-                            >
-                              {tool}
-                              <ExternalLink className="w-3 h-3 text-text-muted" />
-                            </div>
-                          ))}
+                          {move.tools.map((tool: string, i: number) => {
+                            const link = getToolLink(tool);
+                            const ToolContent = (
+                              <div 
+                                key={i}
+                                className="px-3 py-1.5 rounded-lg bg-bg-base border border-border text-[10px] font-black uppercase tracking-wider flex items-center gap-2 hover:border-accent transition-colors cursor-pointer"
+                              >
+                                {tool}
+                                <ExternalLink className="w-3 h-3 text-text-muted" />
+                              </div>
+                            );
+
+                            return link ? (
+                              <Link key={i} href={link}>
+                                {ToolContent}
+                              </Link>
+                            ) : ToolContent;
+                          })}
                         </div>
                       )}
                     </>

@@ -9,6 +9,8 @@ import {
   Search, ExternalLink, ArrowRight, CheckCircle2,
   Clock, Wrench as ToolIcon, Package, Layers
 } from "lucide-react"
+import Link from "next/link"
+import { getToolLink } from "@/lib/tool-utils"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 
@@ -168,11 +170,20 @@ export default function PlaybookPage() {
                                                     Recommended Tools
                                                 </h4>
                                                 <div className="flex flex-wrap gap-1.5">
-                                                    {lvl.tools.map((tool: string) => (
-                                                        <Badge key={tool} variant="secondary" className="bg-bg-surface hover:bg-accent hover:text-bg-base transition-colors cursor-pointer text-[9px] font-bold py-1 px-2 border-none">
-                                                            {tool}
-                                                        </Badge>
-                                                    ))}
+                                                    {lvl.tools.map((tool: string) => {
+                                                        const link = getToolLink(tool);
+                                                        const BadgeContent = (
+                                                            <Badge key={tool} variant="secondary" className="bg-bg-surface hover:bg-accent hover:text-bg-base transition-colors cursor-pointer text-[9px] font-bold py-1 px-2 border-none">
+                                                                {tool}
+                                                            </Badge>
+                                                        );
+                                                        
+                                                        return link ? (
+                                                            <Link key={tool} href={link}>
+                                                                {BadgeContent}
+                                                            </Link>
+                                                        ) : BadgeContent;
+                                                    })}
                                                 </div>
                                             </div>
                                             <div className="space-y-3">

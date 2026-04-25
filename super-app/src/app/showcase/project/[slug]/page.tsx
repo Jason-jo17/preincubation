@@ -5,7 +5,7 @@ import Link from "next/link";
 import { 
   ArrowLeft, 
   ExternalLink, 
-  Github, 
+  GitBranch, 
   Globe, 
   ShieldCheck, 
   Zap, 
@@ -144,7 +144,7 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
               </Button>
               <div className="flex gap-4">
                 <Button variant="outline" className="flex-1 h-14 rounded-2xl border-border hover:border-accent transition-all">
-                  <Github className="w-5 h-5" />
+                  <GitBranch className="w-5 h-5" />
                 </Button>
                 <Button variant="outline" className="flex-1 h-14 rounded-2xl border-border hover:border-accent transition-all">
                   <Globe className="w-5 h-5" />
