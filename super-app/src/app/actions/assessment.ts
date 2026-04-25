@@ -140,7 +140,7 @@ export async function getAllMentees() {
 
     // Map them together
     const menteesWithReadiness = mentees.map(mentee => {
-      const latestReadiness = readinessAssessments.find(ra => ra.userId === mentee.id);
+      const latestReadiness = readinessAssessments.find((ra: any) => ra.userId === mentee.id);
       return {
         ...mentee,
         latestReadiness
