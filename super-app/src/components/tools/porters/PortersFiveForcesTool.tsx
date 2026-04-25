@@ -114,7 +114,7 @@ export function PortersFiveForcesTool({ tool, progress, onDataSaved, submissionI
                                 <PolarGrid stroke="#333" />
                                 <PolarAngleAxis 
                                     dataKey="subject" 
-                                    tick={{ fill: '#888', fontSize: 10, fontWeight: '900', textTransform: 'uppercase' }} 
+                                    tick={{ fill: '#888', fontSize: 10, fontWeight: '900' }} 
                                 />
                                 <PolarRadiusAxis 
                                     angle={30} 

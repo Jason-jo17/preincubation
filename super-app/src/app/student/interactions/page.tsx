@@ -9,7 +9,7 @@ export const metadata = {
 
 export default async function InteractionsPage() {
   const result = await getInteractions();
-  const interactions = result.success ? result.data : [];
+  const interactions = (result.success && result.data ? result.data : []) as any[];
 
   return (
     <div className="p-8 lg:p-12 space-y-12 max-w-6xl mx-auto">

@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { useParams, useRouter } from "next/navigation"
-import { FRAMEWORKS, QUESTIONS } from "@/data/venture-readiness-data"
+import { FRAMEWORKS } from "@/data/venture-readiness-data"
 import { getReadinessAssessment, updateReadinessAssessment } from "@/app/actions/assessment"
 import { motion, AnimatePresence } from "framer-motion"
 import { 
@@ -214,7 +214,7 @@ export default function ValidationPage() {
                                     const lvl = assessment?.levels[activeFw] - (3 - lvlIdx)
                                     if (lvl < 1) return null
                                     
-                                    const qList = QUESTIONS[activeFw]?.[lvl]
+                                    const qList = FRAMEWORKS[activeFw]?.levels[lvl - 1]?.q
                                     if (!qList) return null
 
                                     return (
@@ -232,7 +232,7 @@ export default function ValidationPage() {
                                                     return (
                                                         <div key={qIdx} className="space-y-3">
                                                             <div className="flex justify-between items-start gap-4">
-                                                                <p className="text-xs font-bold text-text-secondary leading-snug max-w-md">{q.text}</p>
+                                                                <p className="text-xs font-bold text-text-secondary leading-snug max-w-md">{q[0]}</p>
                                                                 <div className="flex items-center gap-3 shrink-0">
                                                                     <div className="text-center px-3 py-1 rounded-lg bg-bg-base border border-border">
                                                                         <div className="text-[8px] font-black uppercase text-text-muted">Self</div>

@@ -7,7 +7,7 @@ import { motion, AnimatePresence } from "framer-motion"
 import { 
   Zap, Target, Users, TrendingUp, ShieldCheck, 
   Search, ExternalLink, ArrowRight, CheckCircle2,
-  Clock, Tool as ToolIcon, Package, Layers
+  Clock, Wrench as ToolIcon, Package, Layers
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"

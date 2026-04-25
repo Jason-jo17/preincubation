@@ -5,14 +5,15 @@ import { authOptions } from "@/lib/auth"
 
 export async function GET(
   req: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params
     const session = await getServerSession(authOptions)
     if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
 
     const assessment = await prisma.readinessAssessment.findUnique({
-      where: { id: params.id },
+      where: { id },
       include: {
         user: {
           select: {
@@ -42,9 +43,10 @@ export async function GET(
 
 export async function PATCH(
   req: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params
     const session = await getServerSession(authOptions)
     if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
 
@@ -54,7 +56,7 @@ export async function PATCH(
     // Only power users can update scores/notes of others
     // For now, let's allow PATCH for validation data
     const assessment = await prisma.readinessAssessment.update({
-      where: { id: params.id },
+      where: { id },
       data: {
         ...body
       }
@@ -68,9 +70,10 @@ export async function PATCH(
 
 export async function DELETE(
   req: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params
     const session = await getServerSession(authOptions)
     if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
 
@@ -79,7 +82,7 @@ export async function DELETE(
     }
 
     await prisma.readinessAssessment.delete({
-      where: { id: params.id }
+      where: { id }
     })
 
     return NextResponse.json({ success: true })

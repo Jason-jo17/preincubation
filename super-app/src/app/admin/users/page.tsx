@@ -9,7 +9,7 @@ import { cn } from '@/lib/utils'
 
 export default async function AdminUsersPage() {
   const result = await getAllUsers()
-  const users = result.success ? result.data : []
+  const users = (result.success && result.data ? result.data : []) as any[]
 
   return (
     <div className="space-y-8 p-8 max-w-[1600px] mx-auto">

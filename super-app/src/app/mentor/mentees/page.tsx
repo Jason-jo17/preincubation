@@ -10,7 +10,7 @@ import Link from 'next/link'
 
 export default async function MenteesPage() {
   const result = await getAllMentees()
-  const mentees = result.success ? result.data : []
+  const mentees = (result.success && result.data ? result.data : []) as any[]
 
   return (
     <div className="space-y-8 p-8 max-w-[1600px] mx-auto">

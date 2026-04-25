@@ -1,5 +1,5 @@
 import React from "react";
-import { Users, LayoutGrid, ArrowUpRight, Target, Zap, ShieldCheck } from "lucide-react";
+import { Users, LayoutGrid, ArrowUpRight, Target, Zap, ShieldCheck, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { getCohorts } from "@/app/actions/cohorts";
 import { cn } from "@/lib/utils";
