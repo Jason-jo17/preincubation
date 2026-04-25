@@ -1,229 +1,396 @@
-"use client";
-
 import React from "react";
-import { 
-  Rocket, 
-  Target, 
-  Zap, 
-  Activity, 
-  ChevronRight, 
-  TrendingUp, 
-  Sparkles,
-  Layers,
-  ArrowUpRight,
+import { getMenteeById } from "@/app/actions/assessment";
+import {
+  ArrowLeft,
+  Rocket,
+  Activity,
+  Target,
+  Zap,
   ShieldCheck,
-  MessageSquare,
-  AlertTriangle,
-  Mail,
-  ArrowLeft
+  Clock,
+  TrendingUp,
+  Package,
+  ChevronRight,
+  ExternalLink,
+  CheckCircle2,
+  Circle,
+  BarChart3,
 } from "lucide-react";
-import { motion } from "framer-motion";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { notFound } from "next/navigation";
 import { cn } from "@/lib/utils";
-import { useParams } from "next/navigation";
 
-export default function MenteePortalPage() {
-  const params = useParams();
-  const id = params.id as string;
+export default async function MenteeProfilePage({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const { id } = await params;
+  const result = await getMenteeById(id);
+  const mentee = result.success && result.data ? (result.data as any) : null;
+
+  if (!mentee) return notFound();
+
+  const profile = mentee.menteeProfile;
+  const readiness = mentee.latestReadiness;
+  const levels = (readiness?.levels as any) || {};
+  const startup = mentee.startupProfile;
+
+  const readinessMetrics = [
+    { key: "trl", label: "TRL", color: "text-blue-500", bg: "bg-blue-500/10" },
+    { key: "crl", label: "CRL", color: "text-purple-500", bg: "bg-purple-500/10" },
+    { key: "irl", label: "IRL", color: "text-green-500", bg: "bg-green-500/10" },
+    { key: "mrl", label: "MRL", color: "text-orange-500", bg: "bg-orange-500/10" },
+    { key: "brl", label: "BRL", color: "text-pink-500", bg: "bg-pink-500/10" },
+    { key: "frl", label: "FRL", color: "text-amber-500", bg: "bg-amber-500/10" },
+  ];
+
+  const sprintNodes = profile?.sprintNodes || [];
+  const completedSprints = sprintNodes.filter((s: any) => s.status === "COMPLETED").length;
+  const activeSprint = sprintNodes.find((s: any) => s.status === "ACTIVE");
 
   return (
-    <div className="p-8 lg:p-12 space-y-12 max-w-7xl mx-auto">
-      {/* Header */}
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
-        <div className="space-y-4">
-          <Link href="/manager/mentees" className="flex items-center gap-2 text-text-muted hover:text-accent transition-colors group">
-             <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
-             <span className="text-[10px] font-black uppercase tracking-widest">Back to Portfolio</span>
-          </Link>
-          <div className="flex items-center gap-3">
-             <div className="px-3 py-1 bg-accent/10 text-accent rounded-full text-[10px] font-black uppercase tracking-[0.2em]">
-               Advancement Node
-             </div>
-             <span className="text-[10px] font-bold text-text-muted uppercase tracking-widest">ID: {id}</span>
+    <div className="p-8 space-y-10 max-w-[1600px] mx-auto">
+      {/* Breadcrumb + Header */}
+      <div className="space-y-6">
+        <Link
+          href="/manager/mentees"
+          className="group flex items-center gap-2 text-text-muted hover:text-accent transition-colors w-fit"
+        >
+          <ArrowLeft className="w-4 h-4" />
+          <span className="text-[10px] font-black uppercase tracking-widest">
+            Back to Mentee Directory
+          </span>
+        </Link>
+
+        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6">
+          <div className="flex items-center gap-6">
+            <div className="w-20 h-20 rounded-3xl bg-accent/10 border-2 border-accent/20 flex items-center justify-center text-accent text-3xl font-black shadow-xl shadow-accent/10">
+              {mentee.name?.charAt(0) || "?"}
+            </div>
+            <div className="space-y-2">
+              <div className="flex items-center gap-3 flex-wrap">
+                <h1 className="text-5xl font-black italic uppercase tracking-tighter">
+                  {startup?.startupName || mentee.name}
+                </h1>
+                <Badge className="bg-green-500/10 text-green-500 border-green-500/20 uppercase font-black text-[9px] tracking-widest rounded-full px-3">
+                  Active Node
+                </Badge>
+              </div>
+              <p className="text-text-muted font-bold uppercase tracking-widest text-xs">
+                Founder: {mentee.name} &bull; {mentee.email}
+              </p>
+              <div className="flex items-center gap-4 flex-wrap">
+                {profile?.cohort && (
+                  <Badge variant="outline" className="font-black uppercase text-[9px] tracking-widest">
+                    Cohort: {profile.cohort}
+                  </Badge>
+                )}
+                {readiness?.stage && (
+                  <Badge
+                    variant="outline"
+                    className="font-black uppercase text-[9px] tracking-widest border-accent/30 text-accent"
+                  >
+                    {readiness.stage}
+                  </Badge>
+                )}
+              </div>
+            </div>
           </div>
-          <h1 className="text-5xl font-black italic tracking-tighter uppercase leading-[0.85]">
-            Innovator <span className="text-accent">Portal</span>
-          </h1>
-          <div className="flex items-center gap-4">
-             <div className="size-16 rounded-2xl bg-bg-surface border border-border flex items-center justify-center font-black text-2xl text-accent shadow-xl">
-                A
-             </div>
-             <div className="space-y-1">
-                <h3 className="text-2xl font-black italic tracking-tighter uppercase">Aravind Sharma</h3>
-                <p className="text-xs font-bold text-text-muted uppercase tracking-widest">IIT Bombay • AI/ML Specialist</p>
-             </div>
+
+          <div className="flex gap-3">
+            <Link href={`/assessment/${id}/validation`}>
+              <Button
+                variant="outline"
+                className="border-2 rounded-none font-black uppercase italic text-[10px] tracking-widest px-8"
+              >
+                Validate Assessment
+              </Button>
+            </Link>
+            <Link href={`/assessment/${id}/notes`}>
+              <Button className="bg-accent text-white rounded-none font-black uppercase italic text-[10px] tracking-widest px-8 shadow-xl shadow-accent/20">
+                Add Mentor Notes
+              </Button>
+            </Link>
           </div>
-        </div>
-        
-        <div className="flex gap-3">
-          <Button variant="outline" className="h-14 px-8 border-2 font-black uppercase italic text-[11px] tracking-widest rounded-2xl">
-             <Mail className="w-4 h-4 mr-2" /> Message
-          </Button>
-          <Button className="bg-accent text-white h-14 px-8 font-black uppercase italic text-[11px] tracking-widest rounded-2xl shadow-xl shadow-accent/20 hover:scale-[1.02] transition-transform">
-             Audit Readiness <ChevronRight className="w-4 h-4 ml-2" />
-          </Button>
         </div>
       </div>
 
-      {/* Critical Status Matrix */}
-      <section className="grid grid-cols-1 md:grid-cols-4 gap-6">
-         {[
-           { l: "System Health", v: "92%", s: "Optimized", c: "text-success" },
-           { l: "Advancement Velocity", v: "1.4x", s: "Above Avg", c: "text-accent" },
-           { l: "Interaction Pulse", v: "High", s: "45 Records", c: "text-blue-500" },
-           { l: "Validation Status", v: "TRL 4", s: "Pending Audit", c: "text-warning" },
-         ].map((item, i) => (
-           <Card key={i} className="bg-bg-surface border-border shadow-sm rounded-3xl overflow-hidden p-6 hover:border-accent/30 transition-all">
-              <p className="text-[9px] font-black uppercase text-text-muted tracking-widest mb-1">{item.l}</p>
-              <div className="flex items-baseline gap-2">
-                 <h4 className="text-3xl font-black italic tracking-tighter">{item.v}</h4>
-                 <span className={cn("text-[8px] font-black uppercase", item.c)}>{item.s}</span>
-              </div>
-           </Card>
-         ))}
-      </section>
-
-      {/* Detailed Analysis Tabs */}
-      <Tabs defaultValue="progress" className="w-full space-y-8">
-         <TabsList className="bg-bg-raised border border-border p-1 h-16 rounded-2xl gap-2">
-            <TabsTrigger value="progress" className="h-full px-8 flex items-center gap-2 font-black uppercase tracking-widest text-[10px] data-[state=active]:bg-text-primary data-[state=active]:text-bg-base rounded-xl transition-all">
-               <Activity className="w-4 h-4" /> Readiness Analysis
-            </TabsTrigger>
-            <TabsTrigger value="interactions" className="h-full px-8 flex items-center gap-2 font-black uppercase tracking-widest text-[10px] data-[state=active]:bg-text-primary data-[state=active]:text-bg-base rounded-xl transition-all">
-               <MessageSquare className="w-4 h-4" /> Engagement Logs
-            </TabsTrigger>
-            <TabsTrigger value="evidence" className="h-full px-8 flex items-center gap-2 font-black uppercase tracking-widest text-[10px] data-[state=active]:bg-text-primary data-[state=active]:text-bg-base rounded-xl transition-all">
-               <ShieldCheck className="w-4 h-4" /> Evidence Vault
-            </TabsTrigger>
-         </TabsList>
-
-         <TabsContent value="progress" className="mt-0 outline-none">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-               <Card className="bg-bg-surface border-border shadow-sm rounded-[2.5rem] p-10 space-y-8">
-                  <div className="flex items-center justify-between border-b border-border pb-6">
-                     <h3 className="text-sm font-black uppercase tracking-widest flex items-center gap-2">
-                        <TrendingUp className="w-4 h-4 text-accent" /> Growth Trajectory
-                     </h3>
-                     <Badge className="bg-accent text-white font-black text-[9px] uppercase tracking-widest">TRL Advancement</Badge>
-                  </div>
-                  
-                  <div className="space-y-8">
-                     {[
-                       { l: "Technology Readiness (TRL)", v: 4, max: 9, c: "bg-orange-500" },
-                       { l: "Commercial Readiness (CRL)", v: 3, max: 9, c: "bg-emerald-500" },
-                       { l: "Investment Readiness (IRL)", v: 2, max: 9, c: "bg-blue-500" },
-                     ].map(r => (
-                       <div key={r.l} className="space-y-3">
-                          <div className="flex justify-between items-end">
-                             <div className="space-y-1">
-                                <p className="text-[10px] font-black uppercase tracking-tight">{r.l}</p>
-                                <p className="text-xs font-bold text-text-muted italic">Stage {r.v} reached</p>
-                             </div>
-                             <p className="text-xl font-black italic">{r.v}/{r.max}</p>
-                          </div>
-                          <div className="h-2 bg-bg-base rounded-full overflow-hidden border border-border shadow-inner">
-                             <div className={cn("h-full transition-all duration-1000", r.c)} style={{ width: `${(r.v / r.max) * 100}%` }} />
-                          </div>
-                       </div>
-                     ))}
-                  </div>
-               </Card>
-
-               <div className="space-y-8">
-                  <Card className="bg-text-primary text-bg-base rounded-[2.5rem] p-10 shadow-xl relative overflow-hidden group">
-                     <div className="absolute top-0 right-0 p-8 opacity-10 group-hover:scale-110 transition-transform">
-                        <Zap className="w-32 h-32 -mr-12 -mt-12" />
-                     </div>
-                     <div className="space-y-6 relative z-10">
-                        <div className="space-y-2">
-                           <h3 className="text-2xl font-black italic tracking-tighter uppercase leading-none text-accent">Mentor Recommendations</h3>
-                           <p className="text-[9px] font-black opacity-60 uppercase tracking-widest">AI Assisted Analysis</p>
-                        </div>
-                        <ul className="space-y-4">
-                           {[
-                             "Validate prototype in a simulated industrial environment.",
-                             "Increase engagement frequency with MSINS regional nodes.",
-                             "Document regulatory barriers for TRL 5 compliance."
-                           ].map((rec, i) => (
-                             <li key={i} className="flex gap-3 text-xs font-medium leading-relaxed italic border-l-2 border-accent pl-4">
-                                "{rec}"
-                             </li>
-                           ))}
-                        </ul>
-                        <Button className="w-full h-12 bg-bg-base text-text-primary font-black uppercase italic text-[10px] tracking-widest rounded-xl hover:bg-accent hover:text-white transition-all">
-                           Update Strategy Node
-                        </Button>
-                     </div>
-                  </Card>
-
-                  <Card className="bg-bg-surface border-border rounded-[2.5rem] p-8 space-y-4 shadow-sm border-2 border-warning/20">
-                     <div className="flex items-center gap-3 text-warning">
-                        <AlertTriangle className="w-5 h-5" />
-                        <span className="text-[11px] font-black uppercase tracking-widest">Risk Warning</span>
-                     </div>
-                     <p className="text-xs font-bold text-text-muted italic uppercase leading-relaxed">
-                        Interaction pulse dropped by 25% in the last 48 hours. Recommend proactive intervention.
-                     </p>
-                  </Card>
-               </div>
+      {/* Key Stats Row */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        {[
+          {
+            label: "Tool Submissions",
+            value: mentee.toolSubmissions?.length || 0,
+            icon: Package,
+            color: "text-purple-500",
+          },
+          {
+            label: "Sprints Completed",
+            value: completedSprints,
+            icon: ShieldCheck,
+            color: "text-green-500",
+          },
+          {
+            label: "Active Sprint",
+            value: activeSprint ? `#${activeSprint.sprintNumber}` : "None",
+            icon: Zap,
+            color: "text-accent",
+          },
+          {
+            label: "Assessments Run",
+            value: mentee.assessments?.length || 0,
+            icon: BarChart3,
+            color: "text-blue-500",
+          },
+        ].map((stat, i) => (
+          <div
+            key={i}
+            className="bg-bg-surface border border-border p-6 rounded-[28px] flex flex-col gap-3 relative overflow-hidden group hover:border-accent/30 transition-all"
+          >
+            <div className="absolute top-0 right-0 p-4 opacity-[0.04] group-hover:scale-110 transition-transform">
+              <stat.icon className="w-16 h-16" />
             </div>
-         </TabsContent>
+            <h4 className="text-[9px] font-black uppercase tracking-[0.2em] text-text-muted">
+              {stat.label}
+            </h4>
+            <p className={cn("text-3xl font-black italic tracking-tighter", stat.color)}>
+              {stat.value}
+            </p>
+          </div>
+        ))}
+      </div>
 
-         <TabsContent value="interactions" className="mt-0 outline-none">
-            <Card className="bg-bg-surface border-border shadow-sm rounded-[2.5rem] overflow-hidden">
-               <CardHeader className="p-8 border-b border-border bg-bg-raised/50 flex flex-row items-center justify-between">
-                  <CardTitle className="text-sm font-black uppercase tracking-widest">Interaction Lattice</CardTitle>
-                  <Button variant="outline" className="h-10 px-6 rounded-xl font-black uppercase italic text-[9px] tracking-widest">Export Log</Button>
-               </CardHeader>
-               <CardContent className="p-0">
-                  <div className="overflow-x-auto">
-                     <table className="w-full text-left">
-                        <thead>
-                           <tr className="border-b border-border bg-bg-base/30">
-                              <th className="px-8 py-5 text-[10px] font-black uppercase tracking-widest text-text-muted">Date</th>
-                              <th className="px-8 py-5 text-[10px] font-black uppercase tracking-widest text-text-muted">Stakeholder</th>
-                              <th className="px-8 py-5 text-[10px] font-black uppercase tracking-widest text-text-muted">Type</th>
-                              <th className="px-8 py-5 text-[10px] font-black uppercase tracking-widest text-text-muted">Outcome</th>
-                              <th className="px-8 py-5"></th>
-                           </tr>
-                        </thead>
-                        <tbody className="divide-y divide-border">
-                           {[
-                             { d: "2h Ago", s: "Dr. Sameer K.", t: "Interview", o: "Core validation success" },
-                             { d: "1d Ago", s: "TechCorp Ltd", t: "Meeting", o: "Pilot Q3 interest" },
-                             { d: "3d Ago", s: "MSINS Hub", t: "Audit", o: "TRL 4 verified" },
-                           ].map((item, i) => (
-                             <tr key={i} className="hover:bg-bg-base/50 transition-colors group">
-                                <td className="px-8 py-5 text-[10px] font-bold text-text-muted">{item.d}</td>
-                                <td className="px-8 py-5 font-black uppercase text-[11px] tracking-tight group-hover:text-accent transition-colors">{item.s}</td>
-                                <td className="px-8 py-5">
-                                   <Badge variant="outline" className="text-[8px] font-black uppercase tracking-widest border-border bg-bg-raised">{item.t}</Badge>
-                                </td>
-                                <td className="px-8 py-5 text-[10px] font-medium italic text-text-secondary">{item.o}</td>
-                                <td className="px-8 py-5 text-right">
-                                   <Button variant="ghost" size="icon" className="size-8 rounded-lg group-hover:bg-accent/10 group-hover:text-accent">
-                                      <ArrowUpRight className="w-4 h-4" />
-                                   </Button>
-                                </td>
-                             </tr>
-                           ))}
-                        </tbody>
-                     </table>
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        {/* Left: Readiness Matrix */}
+        <div className="lg:col-span-1 space-y-6">
+          <div className="bg-bg-surface border border-border p-8 rounded-[32px] space-y-6">
+            <div className="flex items-center gap-3">
+              <Target className="w-5 h-5 text-accent" />
+              <h2 className="text-lg font-black italic uppercase tracking-tighter">
+                Readiness <span className="text-accent">Matrix</span>
+              </h2>
+            </div>
+
+            {readiness ? (
+              <div className="space-y-4">
+                {readinessMetrics.map((m) => {
+                  const val = levels[m.key] || 0;
+                  const pct = (val / 9) * 100;
+                  return (
+                    <div key={m.key} className="space-y-2">
+                      <div className="flex justify-between items-center">
+                        <span className="text-[10px] font-black uppercase tracking-widest text-text-muted">
+                          {m.label}
+                        </span>
+                        <span className={cn("text-sm font-black italic", m.color)}>
+                          L{val}
+                        </span>
+                      </div>
+                      <div className="h-2 w-full bg-bg-base rounded-full border border-border overflow-hidden">
+                        <div
+                          className={cn("h-full rounded-full transition-all duration-1000", m.color.replace("text-", "bg-"))}
+                          style={{ width: `${pct}%` }}
+                        />
+                      </div>
+                    </div>
+                  );
+                })}
+                <div className="pt-4 border-t border-border space-y-1">
+                  <p className="text-[9px] font-black uppercase tracking-widest text-text-muted">Overall Stage</p>
+                  <p className="text-xl font-black italic uppercase tracking-tighter text-accent">
+                    {readiness.stage || "Seed"}
+                  </p>
+                </div>
+              </div>
+            ) : (
+              <div className="py-8 text-center space-y-3">
+                <Activity className="w-10 h-10 text-border mx-auto" />
+                <p className="text-[10px] font-bold text-text-muted uppercase tracking-widest">
+                  No readiness assessment recorded yet
+                </p>
+                <Link href={`/assessment/new`}>
+                  <Button variant="outline" className="rounded-xl text-[10px] font-black uppercase tracking-widest mt-2">
+                    Run Diagnostic
+                  </Button>
+                </Link>
+              </div>
+            )}
+          </div>
+
+          {/* Startup Info */}
+          {startup && (
+            <div className="bg-bg-surface border border-border p-8 rounded-[32px] space-y-5">
+              <div className="flex items-center gap-3">
+                <Rocket className="w-5 h-5 text-accent" />
+                <h2 className="text-lg font-black italic uppercase tracking-tighter">
+                  Startup <span className="text-accent">Profile</span>
+                </h2>
+              </div>
+              <div className="space-y-3">
+                {[
+                  { label: "Startup Name", value: startup.startupName },
+                  { label: "Industry", value: startup.industry },
+                  { label: "Stage", value: startup.stage },
+                  { label: "Location", value: startup.location },
+                ].filter(f => f.value).map((field, i) => (
+                  <div key={i} className="flex flex-col gap-0.5">
+                    <span className="text-[9px] font-black uppercase tracking-widest text-text-muted">
+                      {field.label}
+                    </span>
+                    <span className="text-sm font-bold">{field.value}</span>
                   </div>
-               </CardContent>
-            </Card>
-         </TabsContent>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
 
-         <TabsContent value="evidence" className="mt-0 outline-none text-center p-20 bg-bg-surface border-2 border-dashed border-border rounded-[3rem]">
-            <Layers className="w-12 h-12 text-text-muted mx-auto mb-4 opacity-20" />
-            <h4 className="text-xl font-black italic tracking-tighter uppercase text-text-muted">Evidence Vault Locked</h4>
-            <p className="text-[10px] font-bold text-text-muted uppercase tracking-widest mt-2">Requires TRL 5 verification to unlock high-fidelity artifact access.</p>
-         </TabsContent>
-      </Tabs>
+        {/* Right: Sprint Timeline + Tool Activity */}
+        <div className="lg:col-span-2 space-y-6">
+          {/* Sprint Journey */}
+          <div className="bg-bg-surface border border-border p-8 rounded-[32px] space-y-6">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <TrendingUp className="w-5 h-5 text-accent" />
+                <h2 className="text-lg font-black italic uppercase tracking-tighter">
+                  Sprint <span className="text-accent">Journey</span>
+                </h2>
+              </div>
+              <span className="text-[10px] font-black uppercase tracking-widest text-text-muted">
+                {completedSprints} / {sprintNodes.length} Complete
+              </span>
+            </div>
+
+            {sprintNodes.length > 0 ? (
+              <div className="relative">
+                {/* Timeline line */}
+                <div className="absolute left-5 top-4 bottom-4 w-0.5 bg-border" />
+                <div className="space-y-4">
+                  {sprintNodes.map((sprint: any, i: number) => (
+                    <div key={sprint.id} className="flex items-start gap-4 relative">
+                      <div
+                        className={cn(
+                          "w-10 h-10 rounded-full border-2 flex items-center justify-center shrink-0 z-10",
+                          sprint.status === "COMPLETED"
+                            ? "bg-green-500 border-green-500 text-white"
+                            : sprint.status === "ACTIVE"
+                            ? "bg-accent border-accent text-white animate-pulse"
+                            : "bg-bg-base border-border text-text-muted"
+                        )}
+                      >
+                        {sprint.status === "COMPLETED" ? (
+                          <CheckCircle2 className="w-4 h-4" />
+                        ) : sprint.status === "ACTIVE" ? (
+                          <Zap className="w-4 h-4" />
+                        ) : (
+                          <Circle className="w-4 h-4" />
+                        )}
+                      </div>
+                      <div
+                        className={cn(
+                          "flex-1 p-4 rounded-2xl border transition-all",
+                          sprint.status === "ACTIVE"
+                            ? "border-accent/30 bg-accent/5"
+                            : "border-border bg-bg-base"
+                        )}
+                      >
+                        <div className="flex items-center justify-between">
+                          <h4 className="text-sm font-black uppercase tracking-tight">
+                            Sprint {sprint.sprintNumber}
+                            {sprint.status === "ACTIVE" && (
+                              <span className="ml-2 text-[9px] text-accent font-black uppercase tracking-widest">
+                                • In Progress
+                              </span>
+                            )}
+                          </h4>
+                          <Badge
+                            variant="outline"
+                            className={cn(
+                              "text-[8px] font-black uppercase tracking-widest py-0",
+                              sprint.status === "COMPLETED" && "border-green-500/20 text-green-500 bg-green-500/5",
+                              sprint.status === "ACTIVE" && "border-accent/30 text-accent bg-accent/5",
+                              sprint.status === "PENDING" && "border-border text-text-muted"
+                            )}
+                          >
+                            {sprint.status}
+                          </Badge>
+                        </div>
+                        {sprint.goal && (
+                          <p className="text-[10px] text-text-muted font-medium mt-1">{sprint.goal}</p>
+                        )}
+                        {sprint.completedAt && (
+                          <p className="text-[9px] font-bold text-text-muted uppercase tracking-widest mt-2 flex items-center gap-1">
+                            <Clock className="w-3 h-3" />
+                            {new Date(sprint.completedAt).toLocaleDateString()}
+                          </p>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ) : (
+              <div className="py-8 text-center space-y-3">
+                <Zap className="w-10 h-10 text-border mx-auto" />
+                <p className="text-[10px] font-bold text-text-muted uppercase tracking-widest">
+                  No sprint nodes initialized yet
+                </p>
+              </div>
+            )}
+          </div>
+
+          {/* Tool Submissions */}
+          <div className="bg-bg-surface border border-border p-8 rounded-[32px] space-y-6">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <Package className="w-5 h-5 text-accent" />
+                <h2 className="text-lg font-black italic uppercase tracking-tighter">
+                  Tool <span className="text-accent">Activity</span>
+                </h2>
+              </div>
+              <span className="text-[10px] font-black uppercase tracking-widest text-text-muted">
+                {mentee.toolSubmissions?.length || 0} Submissions
+              </span>
+            </div>
+
+            {mentee.toolSubmissions?.length > 0 ? (
+              <div className="divide-y divide-border">
+                {mentee.toolSubmissions.slice(0, 8).map((sub: any, i: number) => (
+                  <div
+                    key={i}
+                    className="py-4 flex items-center justify-between group hover:bg-bg-base/50 -mx-2 px-2 rounded-xl transition-colors"
+                  >
+                    <div className="flex items-center gap-4">
+                      <div className="w-10 h-10 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center">
+                        <Package className="w-4 h-4 text-accent" />
+                      </div>
+                      <div>
+                        <p className="text-[11px] font-black uppercase tracking-tight">
+                          {sub.toolId}
+                        </p>
+                        <p className="text-[9px] font-bold text-text-muted uppercase">
+                          {sub.status || "Completed"} &bull; {new Date(sub.updatedAt || sub.createdAt).toLocaleDateString()}
+                        </p>
+                      </div>
+                    </div>
+                    <ChevronRight className="w-4 h-4 text-text-muted opacity-0 group-hover:opacity-100 transition-opacity" />
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="py-8 text-center space-y-3">
+                <Package className="w-10 h-10 text-border mx-auto" />
+                <p className="text-[10px] font-bold text-text-muted uppercase tracking-widest">
+                  No tool submissions yet
+                </p>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

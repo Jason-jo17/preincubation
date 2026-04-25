@@ -1,7 +1,7 @@
 "use client"
 
 import React, { useState } from "react"
-import { motion } from "framer-motion"
+import { motion, AnimatePresence } from "framer-motion"
 import { 
   Rocket, 
   ArrowLeft, 
@@ -10,16 +10,71 @@ import {
   Zap, 
   Terminal,
   ChevronRight,
-  ShieldCheck
+  ShieldCheck,
+  Loader2,
+  CheckCircle
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent } from "@/components/ui/card"
 import Link from "next/link"
+import { useSession } from "next-auth/react"
+import { createProject } from "@/app/actions/showcase"
+import { useRouter } from "next/navigation"
 
 export default function SubmitProject() {
-  const [step, setStep] = useState(1)
+  const { data: session } = useSession()
+  const router = useRouter()
+  const [loading, setLoading] = useState(false)
+  const [submitted, setSubmitted] = useState(false)
+  const [formData, setFormData] = useState({
+    title: "",
+    shortDescription: "",
+    sector: "",
+    techStack: ""
+  })
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!session?.user) return
+    
+    setLoading(true)
+    const result = await createProject({
+      title: formData.title,
+      shortDescription: formData.shortDescription,
+      sector: formData.sector,
+      creatorId: (session.user as any).id
+    })
+
+    if (result.success) {
+      setSubmitted(true)
+      setTimeout(() => {
+        router.push("/showcase")
+      }, 2000)
+    } else {
+      alert("Failed to submit project. Please try again.")
+    }
+    setLoading(false)
+  }
+
+  if (submitted) {
+    return (
+      <div className="min-h-screen bg-bg-base flex items-center justify-center p-8">
+        <motion.div 
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="text-center space-y-6"
+        >
+          <div className="size-24 bg-success/10 rounded-full flex items-center justify-center mx-auto">
+            <CheckCircle className="w-12 h-12 text-success" />
+          </div>
+          <h2 className="text-4xl font-black uppercase italic italic">Submission Logged</h2>
+          <p className="text-text-muted font-bold uppercase tracking-widest text-sm">Redirecting to Innovation Marketplace...</p>
+        </motion.div>
+      </div>
+    )
+  }
 
   return (
     <div className="min-h-screen bg-bg-base overflow-hidden relative">
@@ -53,27 +108,50 @@ export default function SubmitProject() {
 
           <div className="grid grid-cols-1 md:grid-cols-12 gap-12">
             {/* Form Side */}
-            <div className="md:col-span-8 space-y-8">
+            <form onSubmit={handleSubmit} className="md:col-span-8 space-y-8">
                <div className="p-10 bg-bg-surface border border-border rounded-[3rem] shadow-2xl space-y-8">
                   <div className="space-y-6">
                     <div className="space-y-2">
                        <label className="text-[10px] font-black uppercase tracking-widest text-text-muted ml-1">Project Title</label>
-                       <Input placeholder="E.G. AI-POWERED QUALITY INSPECTOR" className="h-14 bg-bg-raised/50 border-border rounded-2xl text-sm font-bold uppercase tracking-tight focus-visible:ring-accent" />
+                       <Input 
+                        required
+                        value={formData.title}
+                        onChange={(e) => setFormData({...formData, title: e.target.value})}
+                        placeholder="E.G. AI-POWERED QUALITY INSPECTOR" 
+                        className="h-14 bg-bg-raised/50 border-border rounded-2xl text-sm font-bold uppercase tracking-tight focus-visible:ring-accent" 
+                       />
                     </div>
                     
                     <div className="space-y-2">
                        <label className="text-[10px] font-black uppercase tracking-widest text-text-muted ml-1">Core Description</label>
-                       <Textarea placeholder="DESCRIBE THE PROBLEM AND YOUR SOLUTION DELTA..." className="min-h-[150px] bg-bg-raised/50 border-border rounded-2xl text-sm font-bold leading-relaxed focus-visible:ring-accent" />
+                       <Textarea 
+                        required
+                        value={formData.shortDescription}
+                        onChange={(e) => setFormData({...formData, shortDescription: e.target.value})}
+                        placeholder="DESCRIBE THE PROBLEM AND YOUR SOLUTION DELTA..." 
+                        className="min-h-[150px] bg-bg-raised/50 border-border rounded-2xl text-sm font-bold leading-relaxed focus-visible:ring-accent" 
+                       />
                     </div>
 
                     <div className="grid grid-cols-2 gap-6">
                       <div className="space-y-2">
                          <label className="text-[10px] font-black uppercase tracking-widest text-text-muted ml-1">Sector Hub</label>
-                         <Input placeholder="SELECT SECTOR..." className="h-14 bg-bg-raised/50 border-border rounded-2xl text-sm font-bold uppercase focus-visible:ring-accent" />
+                         <Input 
+                          required
+                          value={formData.sector}
+                          onChange={(e) => setFormData({...formData, sector: e.target.value})}
+                          placeholder="SELECT SECTOR..." 
+                          className="h-14 bg-bg-raised/50 border-border rounded-2xl text-sm font-bold uppercase focus-visible:ring-accent" 
+                         />
                       </div>
                       <div className="space-y-2">
                          <label className="text-[10px] font-black uppercase tracking-widest text-text-muted ml-1">Tech Stack</label>
-                         <Input placeholder="E.G. PYTHON, NEXTJS, GPT-4" className="h-14 bg-bg-raised/50 border-border rounded-2xl text-sm font-bold uppercase focus-visible:ring-accent" />
+                         <Input 
+                          value={formData.techStack}
+                          onChange={(e) => setFormData({...formData, techStack: e.target.value})}
+                          placeholder="E.G. PYTHON, NEXTJS, GPT-4" 
+                          className="h-14 bg-bg-raised/50 border-border rounded-2xl text-sm font-bold uppercase focus-visible:ring-accent" 
+                         />
                       </div>
                     </div>
                   </div>
@@ -88,11 +166,20 @@ export default function SubmitProject() {
                      </div>
                   </div>
 
-                  <Button className="w-full h-16 bg-accent text-bg-base rounded-2xl text-xs font-black uppercase tracking-[0.2em] shadow-xl shadow-accent/20">
-                     Initialize CEED Review <ChevronRight className="ml-2 w-5 h-5" />
+                  <Button 
+                    type="submit"
+                    disabled={loading || !session}
+                    className="w-full h-16 bg-accent text-bg-base rounded-2xl text-xs font-black uppercase tracking-[0.2em] shadow-xl shadow-accent/20"
+                  >
+                    {loading ? (
+                      <Loader2 className="w-5 h-5 animate-spin" />
+                    ) : (
+                      <>Initialize CEED Review <ChevronRight className="ml-2 w-5 h-5" /></>
+                    )}
                   </Button>
                </div>
-            </div>
+            </form>
+
 
             {/* Sidebar / Requirements */}
             <div className="md:col-span-4 space-y-8">

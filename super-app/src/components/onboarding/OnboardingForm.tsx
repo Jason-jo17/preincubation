@@ -19,6 +19,7 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { ProfilerStep } from "./ProfilerStep";
 import { TeamProfile } from "@/types/profiler.types";
 
@@ -26,6 +27,7 @@ type Role = "STUDENT" | "STAKEHOLDER" | "ADMIN";
 
 export function OnboardingForm() {
   const router = useRouter();
+  const { update } = useSession();
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({
     role: "" as Role | "",
@@ -70,6 +72,9 @@ export function OnboardingForm() {
       });
       if (!res.ok) {
         console.error("Failed to save onboarding data");
+      } else {
+        // Update the local session so middleware sees the new role
+        await update({ role: formData.role });
       }
     } catch (err) {
       console.error("Error saving onboarding data", err);

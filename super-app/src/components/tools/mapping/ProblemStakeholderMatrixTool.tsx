@@ -3,7 +3,7 @@
 import React, { useState } from 'react'
 import { cn } from '@/lib/utils'
 import { PLATFORM_PROBLEMS, MOCK_STAKEHOLDERS } from '@/lib/data/platform-problems'
-import { AddStakeholderDialog } from "@/components/stakeholders/AddStakeholderDialog"
+import { AddStakeholderDialog } from "@/components/ecosystem/AddStakeholderDialog"
 import { Button } from "@/components/ui/button"
 import { Plus, Save, Loader2 } from "lucide-react"
 import { saveToolData } from '@/app/actions/roadmap'

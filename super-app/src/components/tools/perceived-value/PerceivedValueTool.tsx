@@ -6,7 +6,7 @@ import { Progress } from "@/components/ui/progress"
 import { Button } from "@/components/ui/button"
 import { ThumbsUp, ThumbsDown, Minus, TrendingUp, Save, Loader2 } from "lucide-react"
 import { saveToolData } from '@/app/actions/roadmap'
-import { RecordValueDialog } from "@/components/student/RecordValueDialog"
+import { RecordValueDialog } from "@/components/innovator/RecordValueDialog"
 
 interface Props {
     tool: any

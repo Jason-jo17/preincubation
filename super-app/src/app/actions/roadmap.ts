@@ -22,7 +22,7 @@ export async function saveToolData(toolId: string, data: any, options?: any) {
           iteration: options?.iteration || 1,
         },
       });
-      revalidatePath("/stakeholders/tools");
+      revalidatePath("/ecosystem/tools");
       return { success: true, submissionId: submission.id, message: "Strategic tool data updated." };
     }
 
@@ -35,7 +35,7 @@ export async function saveToolData(toolId: string, data: any, options?: any) {
       },
     });
 
-    revalidatePath("/stakeholders/tools");
+    revalidatePath("/ecosystem/tools");
     return { success: true, submissionId: submission.id, message: "Strategic tool data saved." };
   } catch (error: any) {
     console.error("Error saving tool data:", error);
@@ -62,7 +62,7 @@ export async function saveAssessment(data: any, options?: any) {
       },
     });
 
-    revalidatePath("/stakeholders/tools");
+    revalidatePath("/ecosystem/tools");
     return { success: true, assessmentId: assessment.id, message: "Readiness assessment completed and saved." };
   } catch (error: any) {
     console.error("Error saving assessment:", error);
@@ -117,7 +117,7 @@ export async function deleteToolData(toolId: string, userIdParam?: string) {
         userId: userId,
       },
     });
-    revalidatePath("/stakeholders/tools");
+    revalidatePath("/ecosystem/tools");
     return { success: true };
   } catch (error: any) {
     return { success: false, error: error.message };

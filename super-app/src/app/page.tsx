@@ -22,7 +22,7 @@ const modules = [
     title: "Stakeholder Management",
     description: "Track and manage all institutional partners and individual stakeholders.",
     icon: Users,
-    href: "/stakeholders",
+    href: "/ecosystem",
     color: "var(--color-accent)",
     stats: "124 Active"
   },

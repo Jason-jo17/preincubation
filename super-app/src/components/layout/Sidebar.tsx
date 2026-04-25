@@ -50,24 +50,28 @@ const navItems: NavItem[] = [
   },
   { 
     name: "Ecosystem Hub", 
-    href: "/stakeholders", 
+    href: "/ecosystem", 
     icon: Users,
     roles: ["ADMIN", "MSME"],
     subItems: [
-      { name: "Institutions", href: "/stakeholders/institutions" },
-      { name: "Strategic Map", href: "/stakeholders/strategy-map" },
-      { name: "Analytics", href: "/stakeholders/analytics" },
+      { name: "Overview", href: "/ecosystem" },
+      { name: "Institutions", href: "/ecosystem/institutions" },
+      { name: "Strategic Map", href: "/ecosystem/strategy-map" },
+      { name: "Analytics", href: "/ecosystem/analytics" },
     ]
   },
   { 
     name: "Innovator Workspace", 
-    href: "/student", 
+    href: "/innovator", 
     icon: LayoutDashboard,
     roles: ["STUDENT", "ADMIN"],
     subItems: [
-      { name: "My Dashboard", href: "/student" },
-      { name: "Journey Roadmap", href: "/student/roadmap" },
-      { name: "Interactions Log", href: "/student/interactions" },
+      { name: "My Dashboard", href: "/innovator" },
+      { name: "Journey Roadmap", href: "/innovator/roadmap" },
+      { name: "Interactions Log", href: "/innovator/interactions" },
+      { name: "Progress Tracker", href: "/innovator/tracker" },
+      { name: "Co-Innovator", href: "/innovator/co-innovator" },
+      { name: "Settings", href: "/innovator/settings" },
     ]
   },
   { 
@@ -83,17 +87,17 @@ const navItems: NavItem[] = [
   },
   { 
     name: "Innovation Lab", 
-    href: "/stakeholders/problems", 
+    href: "/ecosystem/problems", 
     icon: Target,
     roles: ["STUDENT", "ADMIN"],
     subItems: [
-      { name: "Active Gaps", href: "/stakeholders/problems" },
-      { name: "Strategic Map", href: "/stakeholders/strategy-map" },
-      { name: "Propose Solution", href: "/stakeholders/solutions" },
-      { name: "Value Prop", href: "/stakeholders/value-propositions" },
-      { name: "Sprint Engine", href: "/stakeholders/sprint" },
-      { name: "Coinovator", href: "/stakeholders/coinovator" },
-      { name: "Recommendation Tools", href: "/stakeholders/tools" },
+      { name: "Active Gaps", href: "/ecosystem/problems" },
+      { name: "Strategic Map", href: "/ecosystem/strategy-map" },
+      { name: "Propose Solution", href: "/ecosystem/solutions" },
+      { name: "Value Prop", href: "/ecosystem/value-propositions" },
+      { name: "Sprint Engine", href: "/ecosystem/sprint" },
+      { name: "Coinovator", href: "/ecosystem/coinovator" },
+      { name: "Recommendation Tools", href: "/ecosystem/tools" },
     ]
   },
   { 
@@ -113,6 +117,7 @@ const navItems: NavItem[] = [
     icon: MessageSquare,
     roles: ["STUDENT", "ADMIN"],
     subItems: [
+      { name: "Overview", href: "/mosi" },
       { name: "Schedule Session", href: "/mosi/schedule" },
       { name: "Interview Hub", href: "/mosi/interview" },
       { name: "Review Feedback", href: "/mosi/review" },
@@ -143,35 +148,51 @@ const navItems: NavItem[] = [
   },
   { 
     name: "Cohort Manager", 
-    href: "/mentor", 
+    href: "/manager", 
     icon: Users,
     roles: ["MENTOR", "ADMIN"],
     subItems: [
-      { name: "Portfolio Overview", href: "/mentor" },
-      { name: "Cohort Tracking", href: "/mentor/cohorts" },
-      { name: "Mentee Insights", href: "/mentor/mentees" },
-      { name: "Review Hub", href: "/mentor/review" },
+      { name: "Portfolio Overview", href: "/manager" },
+      { name: "Cohort Tracking", href: "/manager/cohorts" },
+      { name: "Mentee Insights", href: "/manager/mentees" },
+      { name: "Review Hub", href: "/manager/review" },
     ]
   },
   { 
     name: "System Oracle", 
-    href: "/admin", 
+    href: "/oracle", 
     icon: Shield,
     roles: ["ADMIN"],
     subItems: [
-      { name: "Command Center", href: "/admin" },
-      { name: "User Identities", href: "/admin/users" },
-      { name: "System Settings", href: "/admin/settings" },
-      { name: "Audit Logs", href: "/admin/logs" },
+      { name: "Command Center", href: "/oracle" },
+      { name: "User Identities", href: "/oracle/users" },
+      { name: "System Settings", href: "/oracle/settings" },
+      { name: "Audit Logs", href: "/oracle/logs" },
     ]
   },
 ];
+
 
 export function Sidebar() {
   const pathname = usePathname();
   const { user, setRole } = useAuth();
   const [isCollapsed, setIsCollapsed] = React.useState(false);
   const [expandedItem, setExpandedItem] = React.useState<string | null>(null);
+
+  // Auto-expand the active nav group based on pathname
+  React.useEffect(() => {
+    const active = navItems.find((item) => {
+      if (!item.subItems) return false;
+      const subHrefs = item.subItems.map(s => s.href);
+      return (
+        pathname === item.href ||
+        subHrefs.some(h => pathname === h || (h !== "/" && pathname?.startsWith(h + "/")))
+      );
+    });
+    if (active) {
+      setExpandedItem(active.name);
+    }
+  }, [pathname]);
 
   const filteredItems = navItems.filter(item => 
     user && (item.roles.includes(user.role) || user.role === "ADMIN")
@@ -208,7 +229,13 @@ export function Sidebar() {
       {/* Navigation */}
       <nav className="flex-1 px-4 space-y-1 mt-4 overflow-y-auto custom-scrollbar overflow-x-hidden">
         {filteredItems.map((item) => {
-          const isActive = pathname === item.href || (item.href !== "/" && pathname?.startsWith(item.href));
+          // isActive: true if exact match, OR if one of our subitems matches the current path,
+          // but avoid /ecosystem matching /ecosystem/problems (which belongs to Innovation Lab)
+          const subHrefs = item.subItems?.map(s => s.href) ?? [];
+          const isActive =
+            pathname === item.href ||
+            subHrefs.some(h => pathname === h || (h !== "/" && pathname?.startsWith(h + "/"))) ||
+            (!item.subItems && item.href !== "/" && pathname?.startsWith(item.href + "/"));
           const isExpanded = expandedItem === item.name;
  
           return (

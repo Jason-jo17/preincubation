@@ -72,7 +72,7 @@ export function TargetedRecommendations({ recommendations = [] }: { recommendati
                                 </p>
                                 <div className="flex justify-end pl-11">
                                     <Button variant="outline" size="sm" className="rounded-xl font-bold uppercase tracking-widest text-[10px] h-8" asChild>
-                                        <Link href="/student/cofounder">
+                                        <Link href="/innovator/cofounder">
                                             Take Action <ArrowRight className="ml-2 h-3 w-3" />
                                         </Link>
                                     </Button>

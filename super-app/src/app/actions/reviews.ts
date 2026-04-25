@@ -43,7 +43,7 @@ export async function submitReview(data: {
     },
   });
 
-  revalidatePath('/mentor/review');
+  revalidatePath('/manager/review');
   return review;
 }
 

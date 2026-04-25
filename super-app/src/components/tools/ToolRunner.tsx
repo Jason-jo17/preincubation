@@ -28,6 +28,21 @@ import { BMCTool } from "./bmc/BMCTool"
 import { LeanCanvasTool } from "./lean-canvas/LeanCanvasTool"
 import { PortersFiveForcesTool } from "./porters/PortersFiveForcesTool"
 import { TheoryOfChangeTool } from "./theory-of-change/TheoryOfChangeTool"
+import { FMEAMatrix } from "./fmea/FMEAMatrix"
+import { AARRRFunnel } from "./aarrr/AARRRFunnel"
+import { SeanEllisTest } from "./pmf/SeanEllisTest"
+import KanoModel from "./kano/KanoModel"
+import UnitEconomics from "./finance/UnitEconomics"
+import JavelinBoard from "./validation/JavelinBoard"
+import STPMatrix from "./marketing/STPMatrix"
+import PriceSensitivity from "./finance/PriceSensitivity"
+import MarketSizing from "./marketing/MarketSizing"
+import AssumptionMapping from "./validation/AssumptionMapping"
+import CompetitorMatrix from "./marketing/CompetitorMatrix"
+import ProblemTree from "./social/ProblemTree"
+import CapTable from "./finance/CapTable"
+import ServiceBlueprint from "./operations/ServiceBlueprint"
+import IcebergModel from "./social/IcebergModel"
 
 import { GenericToolForm } from "./GenericToolForm"
 
@@ -170,6 +185,81 @@ export function ToolRunner({ tool, progress, onDataSaved, isNewIteration, submis
         case 'theory_of_change':
         case 'toc':
             return <TheoryOfChangeTool tool={tool} progress={progress} onDataSaved={onDataSaved} submissionId={submissionId} />
+
+        case 'fmea':
+        case 'fmea_matrix':
+        case 'failure_modes':
+            return <FMEAMatrix tool={tool} progress={progress} onDataSaved={onDataSaved} />
+
+        case 'aarrr':
+        case 'pirate_metrics':
+        case 'growth_funnel':
+            return <AARRRFunnel tool={tool} progress={progress} onDataSaved={onDataSaved} />
+
+        case 'sean_ellis':
+        case 'pmf_test':
+        case 'product_market_fit':
+            return <SeanEllisTest tool={tool} progress={progress} onDataSaved={onDataSaved} />
+
+        case 'kano':
+        case 'kano_model':
+        case 'feature_prioritization':
+            return <KanoModel toolId={tool.toolId} projectId={progress.projectId} />
+
+        case 'unit_economics':
+        case 'cac_ltv_calculator':
+        case 'financial_scalability':
+            return <UnitEconomics toolId={tool.toolId} projectId={progress.projectId} />
+
+        case 'javelin_board':
+        case 'experiment_board':
+        case 'validation_board':
+            return <JavelinBoard toolId={tool.toolId} projectId={progress.projectId} />
+
+        case 'stp_matrix':
+        case 'stp_framework':
+        case 'market_targeting':
+            return <STPMatrix toolId={tool.toolId} projectId={progress.projectId} />
+
+        case 'van_westendorp':
+        case 'price_sensitivity':
+        case 'pricing_analysis':
+            return <PriceSensitivity toolId={tool.toolId} projectId={progress.projectId} />
+
+        case 'market_sizing':
+        case 'tam_sam_som':
+        case 'opportunity_sizing':
+            return <MarketSizing toolId={tool.toolId} projectId={progress.projectId} />
+
+        case 'assumption_mapping':
+        case 'hypothesis_mapping':
+        case 'risk_mapping':
+            return <AssumptionMapping toolId={tool.toolId} projectId={progress.projectId} />
+
+        case 'competitor_matrix':
+        case 'competitor_analysis':
+        case 'competitive_landscape':
+            return <CompetitorMatrix toolId={tool.toolId} projectId={progress.projectId} />
+
+        case 'problem_tree':
+        case 'root_cause_tree':
+        case 'problem_analysis':
+            return <ProblemTree toolId={tool.toolId} projectId={progress.projectId} />
+
+        case 'cap_table':
+        case 'equity_modeling':
+        case 'shareholding_structure':
+            return <CapTable toolId={tool.toolId} projectId={progress.projectId} />
+
+        case 'service_blueprint':
+        case 'operational_map':
+        case 'process_blueprint':
+            return <ServiceBlueprint toolId={tool.toolId} projectId={progress.projectId} />
+
+        case 'iceberg_model':
+        case 'systems_thinking':
+        case 'systems_map':
+            return <IcebergModel toolId={tool.toolId} projectId={progress.projectId} />
 
         default:
             return <GenericToolForm tool={tool} progress={progress} onDataSaved={onDataSaved} />

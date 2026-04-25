@@ -28,7 +28,7 @@ export async function saveReadinessAssessment(data: {
       },
     });
 
-    revalidatePath("/student/roadmap");
+    revalidatePath("/innovator/roadmap");
     revalidatePath("/assessment");
     
     return { 
@@ -150,6 +150,32 @@ export async function getAllMentees() {
     return { success: true, data: menteesWithReadiness };
   } catch (error: any) {
     console.error("Error fetching all mentees:", error);
+    return { success: false, error: error.message };
+  }
+}
+
+export async function getMenteeById(userId: string) {
+  try {
+    const mentee = await prisma.user.findUnique({
+      where: { id: userId },
+      include: {
+        assessments: { orderBy: { createdAt: "desc" } },
+        toolSubmissions: { orderBy: { createdAt: "desc" } },
+        menteeProfile: {
+          include: {
+            sprintNodes: { orderBy: { sprintNumber: "asc" } },
+          },
+        },
+        startupProfile: true,
+      },
+    });
+    const latestReadiness = await prisma.readinessAssessment.findFirst({
+      where: { userId },
+      orderBy: { createdAt: "desc" },
+    });
+    return { success: true, data: mentee ? { ...mentee, latestReadiness } : null };
+  } catch (error: any) {
+    console.error("Error fetching mentee by id:", error);
     return { success: false, error: error.message };
   }
 }

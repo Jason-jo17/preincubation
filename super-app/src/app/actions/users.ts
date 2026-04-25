@@ -39,7 +39,7 @@ export async function updateUserRole(userId: string, role: string) {
       data: { role: role as any },
     });
 
-    revalidatePath("/admin/users");
+    revalidatePath("/oracle/users");
     return { success: true, data: user };
   } catch (error: any) {
     console.error("Error updating user role:", error);
@@ -58,7 +58,7 @@ export async function deleteUser(userId: string) {
       where: { id: userId },
     });
 
-    revalidatePath("/admin/users");
+    revalidatePath("/oracle/users");
     return { success: true, message: "User deleted successfully." };
   } catch (error: any) {
     console.error("Error deleting user:", error);

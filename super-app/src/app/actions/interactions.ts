@@ -33,7 +33,7 @@ export async function saveInteraction(data: {
       },
     });
 
-    revalidatePath("/student/interactions");
+    revalidatePath("/innovator/interactions");
     return { success: true, data: interaction };
   } catch (error: any) {
     console.error("Error saving interaction:", error);
